@@ -1,0 +1,20 @@
+timescale:
+  host: 127.0.0.1
+  port: 5432
+  database: timescale
+  username: timescaleuser
+  password: timescaleuser
+  max_size: 10
+
+ts:
+  caffeine:
+    expire:
+      metric: 10080
+      tag: 10080
+      metricTag: 10080
+    capacity:
+      metric: 5000
+      tag: 10000
+      metricTag: 10000
+
+

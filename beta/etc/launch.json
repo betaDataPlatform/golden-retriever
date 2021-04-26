@@ -1,0 +1,12 @@
+{
+  "group": "BTNotify",
+  "name": "BTNotify",
+  "displayName": "通知服务中台",
+  "warmUp": 300,
+  "ip": "127.0.0.1",
+  "port": 26002,
+  "localDependencies": [    
+  ],
+  "status": "tcp",
+  "cmd": "BTNotify-"
+}

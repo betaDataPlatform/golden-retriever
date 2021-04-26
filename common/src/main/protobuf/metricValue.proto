@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+// protoc -I=D:\golden-retriever\common\src\main\protobuf --java_out=D:\golden-retriever\common\src\main\java D:\golden-retriever\common\src\main\protobuf\metricValue.proto
+
+option java_multiple_files = true;
+option java_package = "data.platform.common.protobuf";
+option java_outer_classname = "MetricProto";
+
+message MetricValueProto {
+  string metric = 1;
+  map<string, string> tags = 2;
+  int64 eventTime = 3;
+  double value = 4;
+  int64 ttl = 5;
+}

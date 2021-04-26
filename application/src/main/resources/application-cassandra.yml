@@ -1,0 +1,23 @@
+cassandra:
+  enable: true
+  keyspace-name: dc
+  local-datacenter: datacenter1
+  contact-points: 30.0.11.162
+  port: 9042
+  durable-writes: false
+  defaultTimeToLive: 31536000 # 365 days,14 days a file, seconds
+  windowUnit: DAYS # MINUTES,HOURS,DAYS
+  windowSize: 14
+  defaultMemtableFlushPeriodInMs: 1800000  # flush memetable to sstable,30 minutes
+  request:
+    timeout: 60s
+  caffeine:
+    expire:
+      metric: 10080
+      metricTag: 10080
+    capacity:
+      metric: 5000
+      metricTag: 10000
+
+query:
+  thread: 3
