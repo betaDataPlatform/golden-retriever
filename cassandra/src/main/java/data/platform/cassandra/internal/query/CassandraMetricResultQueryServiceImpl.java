@@ -1,16 +1,17 @@
 package data.platform.cassandra.internal.query;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import data.platform.cassandra.domain.QueryTime;
 import data.platform.cassandra.infra.persistence.mapping.DataPointEO;
 import data.platform.cassandra.infra.persistence.repository.CassandraDataPointRepository;
 import data.platform.cassandra.internal.cache.CassandraCacheService;
 import data.platform.common.query.QueryAggregatorUnit;
 import data.platform.common.query.QueryBuilder;
+import data.platform.common.response.DataPoint;
 import data.platform.common.response.QueryResult;
 import data.platform.common.response.QueryResults;
 import data.platform.common.response.Result;
 import data.platform.common.service.query.MetricResultQueryService;
+import data.platform.common.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.GroupedFlux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.function.Tuples;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,6 +29,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 @ConditionalOnBean(name = "cassandraConfig")
 @Service
@@ -54,7 +57,8 @@ public class CassandraMetricResultQueryServiceImpl implements MetricResultQueryS
         Date beginTime = new Date(queryBuilder.getBeginDate());
         Date endTime = new Date(queryBuilder.getEndDate());
         // 过滤查询开始时间，查询结束时间
-        List<QueryTime> queryTimes = QueryTime.getQueryTimeSpan(covertToLocalDateTime(beginTime), covertToLocalDateTime(endTime));
+        List<QueryTime> queryTimes = QueryTime.getQueryTimeSpan(DateUtil.getDateTimeOfDate(beginTime),
+                DateUtil.getDateTimeOfDate(endTime));
 
         return Flux.fromIterable(queryBuilder.getMetrics())
                 .flatMap(queryMetric -> {
@@ -67,10 +71,15 @@ public class CassandraMetricResultQueryServiceImpl implements MetricResultQueryS
                     for (Map<String, String> tagMap : queryTags) {
                         tagJsons.addAll(cassandraCacheService.matchingTag(metric, tagMap));
                     }
+                    // 分组标签
+                    List<String> groupBys = new ArrayList<>();
+                    if (Objects.nonNull(queryMetric.getGroupers())) {
+                        queryMetric.getGroupers().forEach(queryGroupBy -> groupBys.addAll(queryGroupBy.getTags()));
+                    }
 
                     // 查询函数，只支持一个，不支持多个查询函数
                     QueryAggregatorUnit aggregatorUnit = getQueryAggregatorUnit(queryMetric);
-                    Flux<Result> resultFlux = queryByMetricAndTags(metric, tagJsons, aggregatorUnit, queryTimes);
+                    Flux<Result> resultFlux = queryByMetricAndTags(metric, tagJsons, groupBys, aggregatorUnit, queryTimes);
                     return resultFlux.collectList().map(results -> new QueryResult(results,
                             results.stream().map(result -> result.getDataPoints().size())
                                     .collect(Collectors.summingInt(Integer::intValue))));
@@ -86,20 +95,19 @@ public class CassandraMetricResultQueryServiceImpl implements MetricResultQueryS
      * @param queryTimes     查询时间
      * @return
      */
-    private Flux<Result> queryByMetricAndTags(String metric, Set<String> tagJsons, QueryAggregatorUnit aggregatorUnit,
+    private Flux<Result> queryByMetricAndTags(String metric, Set<String> tagJsons, List<String> groupBys, QueryAggregatorUnit aggregatorUnit,
                                               List<QueryTime> queryTimes) {
 
-        Flux<Result> resultFlux = Flux.fromIterable(tagJsons)
-                .map(tagJson -> new Result(metric, tagJson))
-                .flatMap(result -> {
+        Flux<DataPointEO> dataPointEOFlux = Flux.fromIterable(tagJsons)
+                .flatMap(tagJson -> {
                     Flux<String> sqlFlux = Flux.fromIterable(queryTimes)
                             .map(queryTime -> {
                                 // key是按照天存储
                                 String sql;
                                 if (aggregatorUnit == QueryAggregatorUnit.PLAIN) {
-                                    sql = String.format(QUERY_SQL, metric, result.getTagJson(), queryTime.getDay(), timeFormatter.format(queryTime.getStartOffSet()), timeFormatter.format(queryTime.getEndOffSet()));
+                                    sql = String.format(QUERY_SQL, metric, tagJson, queryTime.getDay(), timeFormatter.format(queryTime.getStartOffSet()), timeFormatter.format(queryTime.getEndOffSet()));
                                 } else {
-                                    sql = String.format(FUNCTION_SQL, aggregatorUnit.name(), metric, result.getTagJson(), queryTime.getDay(), timeFormatter.format(queryTime.getStartOffSet()), timeFormatter.format(queryTime.getEndOffSet()));
+                                    sql = String.format(FUNCTION_SQL, aggregatorUnit.name(), metric, tagJson, queryTime.getDay(), timeFormatter.format(queryTime.getStartOffSet()), timeFormatter.format(queryTime.getEndOffSet()));
                                 }
                                 //log.info(sql);
                                 return sql;
@@ -110,39 +118,75 @@ public class CassandraMetricResultQueryServiceImpl implements MetricResultQueryS
                             .groupBy(sql -> sql.hashCode() % queryThreadNum)
                             .publishOn(Schedulers.boundedElastic());
 
-                    Flux<DataPointEO> dataPointEOFlux = null;
                     if (aggregatorUnit == QueryAggregatorUnit.PLAIN) {
-                        dataPointEOFlux = cassandraDataPointRepository.find(groups);
+                        return cassandraDataPointRepository.find(groups);
                     } else {
-                        dataPointEOFlux = cassandraDataPointRepository.statFunction(aggregatorUnit, groups, day, queryTimes.get(0).getStartOffSet());
+                        return cassandraDataPointRepository.statFunction(aggregatorUnit, groups, day, queryTimes.get(0).getStartOffSet());
                     }
-
-                    return dataPointEOFlux
-                            .filter(eo -> Objects.nonNull(eo.getDataPointKey().getMetric()))
-                            .map(eo -> eo.toDataPoint())
-                            .collectList()
-                            .map(dataPoints -> new Result(metric, getTags(result.getTagJson()), dataPoints));
                 });
+
+        Flux<Result> resultFlux;
+        if (groupBys.size() == 1) {
+            resultFlux = dataPointEOFlux
+                    .groupBy(dataPointEO -> dataPointEO.getDataPointKey().getTagJson().get(groupBys.get(0)))
+                    .flatMap(keyFlux -> keyFlux.collectList()
+                            .map(eos -> new Result(metric, getTags(eos), getDataPoints(eos, aggregatorUnit))));
+        } else if (groupBys.size() == 2) {
+            resultFlux = dataPointEOFlux
+                    .groupBy(dataPointEO -> Tuples.of(dataPointEO.getDataPointKey().getTagJson().get(groupBys.get(0)),
+                            dataPointEO.getDataPointKey().getTagJson().get(groupBys.get(1))))
+                    .flatMap(keyFlux -> keyFlux.collectList()
+                            .map(eos -> new Result(metric, getTags(eos), getDataPoints(eos, aggregatorUnit))));
+        } else if (groupBys.size() == 3) {
+            resultFlux = dataPointEOFlux
+                    .groupBy(dataPointEO -> Tuples.of(dataPointEO.getDataPointKey().getTagJson().get(groupBys.get(0)),
+                            dataPointEO.getDataPointKey().getTagJson().get(groupBys.get(1)),
+                            dataPointEO.getDataPointKey().getTagJson().get(groupBys.get(2))))
+                    .flatMap(keyFlux -> keyFlux.collectList()
+                            .map(eos -> new Result(metric, getTags(eos), getDataPoints(eos, aggregatorUnit))));
+        } else {
+            resultFlux = dataPointEOFlux.collectList()
+                    .map(eos -> new Result(metric, getTags(eos), getDataPoints(eos, aggregatorUnit)))
+                    .flatMapMany(Flux::just);
+        }
+
         return resultFlux;
     }
 
-    private Map<String, List<String>> getTags(String tagJson) {
-        Map<String, List<String>> tags = new HashMap<>();
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, String> tagJsonMap = objectMapper.readValue(tagJson, Map.class);
-            for (Map.Entry<String, String> entry : tagJsonMap.entrySet()) {
-                tags.put(entry.getKey(), Arrays.asList(entry.getValue()));
+    private Map<String, Set<String>> getTags(List<DataPointEO> eos) {
+        Map<String, Set<String>> tags = new HashMap<>();
+        eos.forEach(eo -> {
+            for (Map.Entry<String, String> entry : eo.getDataPointKey().getTagJson().entrySet()) {
+                tags.putIfAbsent(entry.getKey(), new HashSet<>());
+                tags.get(entry.getKey()).add(entry.getValue());
             }
-        } catch (Exception ex) {
-            log.error("", ex);
-        }
+        });
         return tags;
     }
 
-    private LocalDateTime covertToLocalDateTime(Date date) {
-        return date.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
+    private List<DataPoint> getDataPoints(List<DataPointEO> eos, QueryAggregatorUnit aggregatorUnit) {
+        if (aggregatorUnit == QueryAggregatorUnit.PLAIN) {
+            return eos.stream().map(eo -> eo.toDataPoint()).collect(Collectors.toList());
+        } else {
+            Double value = null;
+            DoubleStream valueStream = eos.stream().mapToDouble(eo -> eo.getValue());
+            if (aggregatorUnit == QueryAggregatorUnit.AVG) {
+                value = valueStream.average().getAsDouble();
+            } else if (aggregatorUnit == QueryAggregatorUnit.MAX) {
+                value = valueStream.max().getAsDouble();
+            } else if (aggregatorUnit == QueryAggregatorUnit.MIN) {
+                value = valueStream.min().getAsDouble();
+            } else if (aggregatorUnit == QueryAggregatorUnit.SUM) {
+                value = valueStream.sum();
+            }
+            DataPoint dataPoint = new DataPoint();
+            LocalDateTime localDateTime = LocalDateTime.of(eos.get(0).getDataPointKey().getPartition(),eos.get(0).getDataPointKey().getOffset());
+            Date eventTime = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+            dataPoint.setTimestamp(eventTime);
+            dataPoint.setValue(value);
+            return Arrays.asList(dataPoint);
+        }
     }
+
+
 }

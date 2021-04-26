@@ -91,7 +91,7 @@ public class CassandraCacheService {
                     MetricTag.cacheKey(metric, tagName, tagValue),
                     k -> new HashSet<>())
                     .stream()
-                    .map(MetricTag::getTag)
+                    .map(MetricTag::getTagJson)
                     .collect(Collectors.toSet());
             tagSets.add(tempSet);
         });

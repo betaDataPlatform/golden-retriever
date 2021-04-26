@@ -1,9 +1,12 @@
 package data.platform.common.domain;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.Map;
 
 /**
  * CPU location china {"host": "30.0.244.25","location": "china"}
@@ -27,7 +30,7 @@ public class MetricTag {
     private String tagValue;
 
     // 标签
-    private String tag;
+    private Map<String, String> tag;
 
     @Override
     public boolean equals(Object o) {
@@ -60,5 +63,14 @@ public class MetricTag {
 
     public static String cacheKey(String metric, String tagName, String tagValue) {
         return String.join("|", metric, tagName, tagValue);
+    }
+
+    public String getTagJson() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(tag);
+        } catch (Exception ex) {
+            return "";
+        }
     }
 }

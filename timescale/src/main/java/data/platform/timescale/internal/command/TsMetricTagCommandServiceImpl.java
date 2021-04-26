@@ -11,6 +11,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+
 @ConditionalOnBean(name = "timeScaleConfig")
 @Service
 @Slf4j
@@ -24,11 +26,11 @@ public class TsMetricTagCommandServiceImpl implements MetricTagCommandService {
     final TsCacheService tsCacheService;
 
     @Override
-    public Mono<Long>   save(MetricValue metricValue, String tag) {
+    public Mono<Long> save(MetricValue metricValue) {
         // convert to: metric:tagKey:tagValue:tag
-        return getMetricTag(metricValue, tag)
+        return getMetricTag(metricValue)
                 .flatMap(metricTag -> tsCacheService.metricPutCache(metricTag.getMetric())
-                                .then(tsCacheService.tagPutCache(metricTag.getTag()))
+                                .then(tsCacheService.tagPutCache(metricTag.getTagJson()))
                                 .then(tsCacheService.metricTagPutCache(metricTag))
                 )
                 .count();

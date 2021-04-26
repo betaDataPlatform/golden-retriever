@@ -36,7 +36,7 @@ public class ApiController {
                 metricValue.setEventTime(DateUtil.getDateTimeOfTimestamp(Long.parseLong(samplePoint[0].toString())));
                 metricValue.setValue(Double.parseDouble(samplePoint[1].toString()));
                 metricValue.setMetric(metric.getName());
-                metricValue.setTags(metric.getTags());
+                metricValue.setTag(metric.getTags());
                 metricValue.setTtl(metric.getTtl());
                 // 发布事件
                 applicationContext.publishEvent(new MetricValueEvent(metricValue));

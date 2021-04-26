@@ -10,22 +10,22 @@ import java.util.stream.Collectors;
 
 public interface MetricTagCommandService {
 
-    Mono<Long> save(MetricValue metricValue, String tag);
+    Mono<Long> save(MetricValue metricValue);
 
-    default Flux<MetricTag> getMetricTag(MetricValue metricValue, String tag) {
+    default Flux<MetricTag> getMetricTag(MetricValue metricValue) {
         return Mono.just(metricValue)
-                .map(mv -> getMetricTags(mv, tag))
+                .map(mv -> getMetricTags(mv))
                 .flatMapMany(Flux::fromIterable);
     }
 
-    default List<MetricTag> getMetricTags(MetricValue metricValue, String tag) {
-        return metricValue.getTags().entrySet().stream()
+    default List<MetricTag> getMetricTags(MetricValue metricValue) {
+        return metricValue.getTag().entrySet().stream()
                 .map(entry -> {
                     MetricTag metricTag = new MetricTag();
                     metricTag.setMetric(metricValue.getMetric());
                     metricTag.setTagName(entry.getKey());
                     metricTag.setTagValue(entry.getValue());
-                    metricTag.setTag(tag);
+                    metricTag.setTag(metricValue.getTag());
                     return metricTag;
                 })
                 .collect(Collectors.toList());

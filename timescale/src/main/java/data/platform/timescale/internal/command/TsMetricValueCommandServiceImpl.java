@@ -30,16 +30,11 @@ public class TsMetricValueCommandServiceImpl implements MetricValueCommandServic
 
     @Override
     public Mono<Long> save(MetricValue metricValue) {
-        Optional<String> tagOptional = getTag(metricValue);
-        if (!tagOptional.isPresent()) {
-            return Mono.just(new Long(0));
-        }
-
         return Mono.just(metricValue)
                 // 数据加入缓存
-                .flatMap(mv -> metricTagCommandService.save(mv, tagOptional.get()))
+                .flatMap(mv -> metricTagCommandService.save(mv))
                 // 转换成dataPoint
-                .map(count -> metricValueToDataPoint(metricValue, tagOptional.get()))
+                .map(count -> metricValueToDataPoint(metricValue))
                 .filter(dataPointOptional -> dataPointOptional.isPresent())
                 .map(dataPointOptional -> dataPointOptional.get())
                 // 插入数据库
@@ -47,7 +42,7 @@ public class TsMetricValueCommandServiceImpl implements MetricValueCommandServic
                 .map(eo -> 1L);
     }
 
-    private Optional<DataPointEO> metricValueToDataPoint(MetricValue metricValue, String tag) {
+    private Optional<DataPointEO> metricValueToDataPoint(MetricValue metricValue) {
         try {
             DataPointEO eo = new DataPointEO();
             eo.setEventTime(Date.from(metricValue.getEventTime().atZone(ZoneId.systemDefault()).toInstant()));
@@ -59,9 +54,10 @@ public class TsMetricValueCommandServiceImpl implements MetricValueCommandServic
             }
             eo.setMetricId(metricIdOptional.get());
 
-            Optional<Integer> tagIdOptional = tsCacheService.getTagId(tag);
+            String tagJson = metricValue.getTagJson();
+            Optional<Integer> tagIdOptional = tsCacheService.getTagId(tagJson);
             if (!tagIdOptional.isPresent()) {
-                log.error("tag: [{}] can't find in cache!", tag);
+                log.error("tag: [{}] can't find in cache!", tagJson);
                 return Optional.empty();
             }
             eo.setTagId(tagIdOptional.get());

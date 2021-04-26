@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -36,16 +37,12 @@ public class CassandraMetricValueCommandServiceImpl implements MetricValueComman
 
     @Override
     public Mono<Long> save(MetricValue metricValue) {
-        Optional<String> tagOptional = getTag(metricValue);
-        if (!tagOptional.isPresent()) {
-            return Mono.just(new Long(0));
-        }
 
         return Mono.just(metricValue)
                 // 数据加入缓存
-                .flatMap(mv -> metricTagCommandService.save(mv, tagOptional.get()))
+                .flatMap(mv -> metricTagCommandService.save(mv))
                 // 转换成dataPoint
-                .map(count -> metricValueToDataPoint(metricValue, tagOptional.get()))
+                .map(count -> metricValueToDataPoint(metricValue))
                 .filter(dataPointOptional -> dataPointOptional.isPresent())
                 .map(dataPointOptional -> dataPointOptional.get())
                 // 插入数据库
@@ -61,11 +58,11 @@ public class CassandraMetricValueCommandServiceImpl implements MetricValueComman
                 .map(eo -> 1L);
     }
 
-    private Optional<DataPointEO> metricValueToDataPoint(MetricValue metricValue, String tag) {
+    private Optional<DataPointEO> metricValueToDataPoint(MetricValue metricValue) {
         try {
             DataPointKey dataPointKey = new DataPointKey();
             dataPointKey.setMetric(metricValue.getMetric());
-            dataPointKey.setTagJson(tag);
+            dataPointKey.setTagJson(metricValue.getTag());
 
             dataPointKey.setPartition(metricValue.getEventTime().toLocalDate());
             dataPointKey.setOffset(metricValue.getEventTime().toLocalTime());
