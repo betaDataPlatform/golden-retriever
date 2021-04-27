@@ -1,0 +1,24 @@
+version: "3.9" 
+# docker run -it --rm cassandra cqlsh cassandra-0s
+services:
+  cassandra:
+    image: cassandra:latest
+    restart: always
+    ports:
+      - 7000:7000
+      - 9042:9042
+    volumes:
+      - /Users/chenhao/Documents/cassandra/commitlog:/var/lib/cassandra/commitlog
+      - /Users/chenhao/Documents/cassandra/hints:/var/lib/cassandra/hints
+      - /Users/chenhao/Documents/cassandra/data:/var/lib/cassandra/data
+      - /Users/chenhao/Documents/cassandra/saved_caches:/var/lib/cassandra/saved_caches
+      - /Users/chenhao/Documents/cassandra/logs:/var/log/cassandra
+    environment:
+      - CASSANDRA_CLUSTER_NAME=cluster
+      - CASSANDRA_NUM_TOKENS=8
+      - CASSANDRA_DC=dc1
+      - CASSANDRA_RACK=rack0
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - MAX_HEAP_SIZE=1G
+      - HEAP_NEWSIZE=200M
+     

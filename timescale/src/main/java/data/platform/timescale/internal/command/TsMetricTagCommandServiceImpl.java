@@ -30,7 +30,7 @@ public class TsMetricTagCommandServiceImpl implements MetricTagCommandService {
         // convert to: metric:tagKey:tagValue:tag
         return getMetricTag(metricValue)
                 .flatMap(metricTag -> tsCacheService.metricPutCache(metricTag.getMetric())
-                                .then(tsCacheService.tagPutCache(metricTag.getTagJson()))
+                                .then(tsCacheService.tagPutCache(metricTag.getTag()))
                                 .then(tsCacheService.metricTagPutCache(metricTag))
                 )
                 .count();

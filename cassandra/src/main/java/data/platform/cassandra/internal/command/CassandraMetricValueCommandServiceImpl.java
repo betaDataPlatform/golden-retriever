@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -62,7 +61,7 @@ public class CassandraMetricValueCommandServiceImpl implements MetricValueComman
         try {
             DataPointKey dataPointKey = new DataPointKey();
             dataPointKey.setMetric(metricValue.getMetric());
-            dataPointKey.setTagJson(metricValue.getTag());
+            dataPointKey.setTagJson(metricValue.getTagJson());
 
             dataPointKey.setPartition(metricValue.getEventTime().toLocalDate());
             dataPointKey.setOffset(metricValue.getEventTime().toLocalTime());

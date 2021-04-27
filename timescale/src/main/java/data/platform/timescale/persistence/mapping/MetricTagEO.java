@@ -1,14 +1,11 @@
 package data.platform.timescale.persistence.mapping;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import data.platform.common.domain.MetricTag;
 import lombok.*;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Setter
@@ -62,21 +59,12 @@ public class MetricTagEO {
         return result;
     }
 
-    public Map<String, String> getTagMap() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(tag, Map.class);
-        } catch (Exception ex) {
-            return new HashMap<>();
-        }
-    }
-
     public MetricTag toMetricTag() {
         MetricTag metricTag = new MetricTag();
         metricTag.setMetric(metric);
         metricTag.setTagName(tagName);
         metricTag.setTagValue(tagValue);
-        metricTag.setTag(getTagMap());
+        metricTag.setTag(tag);
         return metricTag;
     }
 

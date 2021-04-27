@@ -3,6 +3,7 @@ package data.platform.timescale.internal.command;
 import data.platform.common.domain.MetricValue;
 import data.platform.common.service.command.MetricTagCommandService;
 import data.platform.common.service.command.MetricValueCommandService;
+import data.platform.common.util.DateUtil;
 import data.platform.timescale.internal.cache.TsCacheService;
 import data.platform.timescale.persistence.mapping.DataPointEO;
 import data.platform.timescale.persistence.repository.TsDataPointRepository;
@@ -45,7 +46,7 @@ public class TsMetricValueCommandServiceImpl implements MetricValueCommandServic
     private Optional<DataPointEO> metricValueToDataPoint(MetricValue metricValue) {
         try {
             DataPointEO eo = new DataPointEO();
-            eo.setEventTime(Date.from(metricValue.getEventTime().atZone(ZoneId.systemDefault()).toInstant()));
+            eo.setEventTime(DateUtil.getDateOfLocalDateTime(metricValue.getEventTime()));
 
             Optional<Integer> metricIdOptional = tsCacheService.getMetricId(metricValue.getMetric());
             if (!metricIdOptional.isPresent()) {

@@ -21,8 +21,8 @@ public class CassandraMetricTagCommandServiceImpl implements MetricTagCommandSer
     final CassandraCacheService cassandraCacheService;
 
     @Override
-    public Mono<Long> save(MetricValue metricValue, String tag) {
-        return getMetricTag(metricValue, tag)
+    public Mono<Long> save(MetricValue metricValue) {
+        return getMetricTag(metricValue)
                 .flatMap(metricTag -> cassandraCacheService.metricTagPutCache(metricTag))
                 .count();
     }

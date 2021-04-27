@@ -37,7 +37,7 @@ public class MetricValueEventTest {
             for (int i = 0; i < 5; i++) {
                 MetricValue metricValue = new MetricValue();
                 metricValue.setMetric("CPU_LOAD");
-                metricValue.setTags(tag);
+                metricValue.setTag(tag);
 
                 metricValue.setEventTime(LocalDateTime.now().plusMinutes(i));
                 metricValue.setValue(Double.valueOf(valueSize)*100);

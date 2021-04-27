@@ -1,5 +1,6 @@
 package data.platform.cassandra.internal.query;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import data.platform.cassandra.domain.QueryTime;
 import data.platform.cassandra.infra.persistence.mapping.DataPointEO;
 import data.platform.cassandra.infra.persistence.repository.CassandraDataPointRepository;
@@ -128,20 +129,20 @@ public class CassandraMetricResultQueryServiceImpl implements MetricResultQueryS
         Flux<Result> resultFlux;
         if (groupBys.size() == 1) {
             resultFlux = dataPointEOFlux
-                    .groupBy(dataPointEO -> dataPointEO.getDataPointKey().getTagJson().get(groupBys.get(0)))
+                    .groupBy(dataPointEO -> parseJson(dataPointEO.getDataPointKey().getTagJson()).get(groupBys.get(0)))
                     .flatMap(keyFlux -> keyFlux.collectList()
                             .map(eos -> new Result(metric, getTags(eos), getDataPoints(eos, aggregatorUnit))));
         } else if (groupBys.size() == 2) {
             resultFlux = dataPointEOFlux
-                    .groupBy(dataPointEO -> Tuples.of(dataPointEO.getDataPointKey().getTagJson().get(groupBys.get(0)),
-                            dataPointEO.getDataPointKey().getTagJson().get(groupBys.get(1))))
+                    .groupBy(dataPointEO -> Tuples.of(parseJson(dataPointEO.getDataPointKey().getTagJson()).get(groupBys.get(0)),
+                            parseJson(dataPointEO.getDataPointKey().getTagJson()).get(groupBys.get(1))))
                     .flatMap(keyFlux -> keyFlux.collectList()
                             .map(eos -> new Result(metric, getTags(eos), getDataPoints(eos, aggregatorUnit))));
         } else if (groupBys.size() == 3) {
             resultFlux = dataPointEOFlux
-                    .groupBy(dataPointEO -> Tuples.of(dataPointEO.getDataPointKey().getTagJson().get(groupBys.get(0)),
-                            dataPointEO.getDataPointKey().getTagJson().get(groupBys.get(1)),
-                            dataPointEO.getDataPointKey().getTagJson().get(groupBys.get(2))))
+                    .groupBy(dataPointEO -> Tuples.of(parseJson(dataPointEO.getDataPointKey().getTagJson()).get(groupBys.get(0)),
+                            parseJson(dataPointEO.getDataPointKey().getTagJson()).get(groupBys.get(1)),
+                            parseJson(dataPointEO.getDataPointKey().getTagJson()).get(groupBys.get(2))))
                     .flatMap(keyFlux -> keyFlux.collectList()
                             .map(eos -> new Result(metric, getTags(eos), getDataPoints(eos, aggregatorUnit))));
         } else {
@@ -156,7 +157,8 @@ public class CassandraMetricResultQueryServiceImpl implements MetricResultQueryS
     private Map<String, Set<String>> getTags(List<DataPointEO> eos) {
         Map<String, Set<String>> tags = new HashMap<>();
         eos.forEach(eo -> {
-            for (Map.Entry<String, String> entry : eo.getDataPointKey().getTagJson().entrySet()) {
+            Map<String, String> tag = parseJson(eo.getDataPointKey().getTagJson());
+            for (Map.Entry<String, String> entry : tag.entrySet()) {
                 tags.putIfAbsent(entry.getKey(), new HashSet<>());
                 tags.get(entry.getKey()).add(entry.getValue());
             }
@@ -188,5 +190,14 @@ public class CassandraMetricResultQueryServiceImpl implements MetricResultQueryS
         }
     }
 
-
+    private Map<String, String> parseJson(String json) {
+        Map<String, String> tagJson = new HashMap<>();
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            tagJson = objectMapper.readValue(json, Map.class);
+        } catch (Exception ex) {
+            log.error("", ex);
+        }
+        return tagJson;
+    }
 }

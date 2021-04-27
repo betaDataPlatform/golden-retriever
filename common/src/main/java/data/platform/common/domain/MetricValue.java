@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Getter
 @Setter
@@ -27,7 +28,9 @@ public class MetricValue {
     public String getTagJson() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.writeValueAsString(tag);
+            Map<String, String> sortedMap = new TreeMap<>();
+            sortedMap.putAll(tag);
+            return objectMapper.writeValueAsString(sortedMap);
         } catch (Exception ex) {
             return "";
         }

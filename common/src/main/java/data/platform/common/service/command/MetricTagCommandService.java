@@ -25,7 +25,7 @@ public interface MetricTagCommandService {
                     metricTag.setMetric(metricValue.getMetric());
                     metricTag.setTagName(entry.getKey());
                     metricTag.setTagValue(entry.getValue());
-                    metricTag.setTag(metricValue.getTag());
+                    metricTag.setTag(metricValue.getTagJson());
                     return metricTag;
                 })
                 .collect(Collectors.toList());

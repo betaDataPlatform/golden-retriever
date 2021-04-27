@@ -121,7 +121,7 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
                                 covertValue(metricValue);
                                 return true;
                             }
-                            for (Map.Entry<String, String> ite : metricValue.getTags().entrySet()) {
+                            for (Map.Entry<String, String> ite : metricValue.getTag().entrySet()) {
                                 if (tagMap.containsKey(ite.getKey()) && tagMap.get(ite.getKey()).equals(ite.getValue())) {
                                     covertValue(metricValue);
                                     return true;
@@ -208,9 +208,9 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
     Stream<MetricValue> writeCustomMetric(Meter meter) {
         long wallTime = config().clock().wallTime();
         List<Tag> meterTags = getConventionTags(meter.getId());
-        Map<String, String> tags = new HashMap<>();
-        for (Tag tag : meterTags) {
-            tags.put(tag.getKey(), tag.getValue());
+        Map<String, String> tag = new HashMap<>();
+        for (Tag meterTag : meterTags) {
+            tag.put(meterTag.getKey(), meterTag.getValue());
         }
         List<MetricValue> metricValues = new ArrayList<>();
         for (Measurement measurement : meter.measure()) {
@@ -224,7 +224,7 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
 
             MetricValue metricValue = new MetricValue();
             metricValue.setMetric(metricName);
-            metricValue.setTags(tags);
+            metricValue.setTag(tag);
             metricValue.setEventTime(eventTime);
             metricValue.setValue(Double.valueOf(DoubleFormat.wholeOrDecimal(value)));
             metricValue.setTtl(TTL);
@@ -239,15 +239,15 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
 
         LocalDateTime eventTime = dateToLocalDateTime(wallTime);
 
-        Map<String, String> tags = new HashMap<>();
+        Map<String, String> tag = new HashMap<>();
         List<Tag> meterTags = getConventionTags(id);
-        for (Tag tag : meterTags) {
-            tags.put(tag.getKey(), tag.getValue());
+        for (Tag meterTag : meterTags) {
+            tag.put(meterTag.getKey(), meterTag.getValue());
         }
 
         MetricValue metricValue = new MetricValue();
         metricValue.setMetric(metricName);
-        metricValue.setTags(tags);
+        metricValue.setTag(tag);
         metricValue.setEventTime(eventTime);
         metricValue.setValue(Double.valueOf(DoubleFormat.wholeOrDecimal(value)));
         metricValue.setTtl(TTL);

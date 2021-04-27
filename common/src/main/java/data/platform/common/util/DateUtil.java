@@ -18,4 +18,8 @@ public class DateUtil {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
     }
+
+    public static Date getDateOfLocalDateTime(LocalDateTime dateTime) {
+        return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
 }

@@ -9,7 +9,6 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +20,7 @@ public class DataPointKey implements Serializable {
     private String metric;
 
     @PrimaryKeyColumn(name = "tag_json", ordinal = 1, type = PrimaryKeyType.PARTITIONED)
-    private Map<String, String> tagJson;
+    private String tagJson;
 
     @PrimaryKeyColumn(name = "day", ordinal = 2, type = PrimaryKeyType.PARTITIONED)
     private LocalDate partition;

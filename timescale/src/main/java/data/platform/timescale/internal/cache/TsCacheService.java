@@ -133,7 +133,7 @@ public class TsCacheService {
                     MetricTag.cacheKey(metric, tagName, tagValue),
                     k -> new HashSet<>())
                     .stream()
-                    .map(MetricTag::getTagJson)
+                    .map(MetricTag::getTag)
                     .collect(Collectors.toSet());
             tagSets.add(tempSet);
         });
@@ -154,7 +154,7 @@ public class TsCacheService {
                     eo.setMetricId(metricId);
                     eo.setTagName(metricTag.getTagName());
                     eo.setTagValue(metricTag.getTagValue());
-                    eo.setTag(metricTag.getTagJson());
+                    eo.setTag(metricTag.getTag());
                     eo.setTagId(tagId);
                     return metricTagRepository.save(eo);
                 }

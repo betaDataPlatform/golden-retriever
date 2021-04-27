@@ -1,0 +1,536 @@
+2021-04-27 09:49:10.763 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [data.platform.timescale.MetricValueEventTest], using SpringBootContextLoader
+2021-04-27 09:49:10.820 main INFO  o.s.t.c.s.AbstractContextLoader - Could not detect default resource locations for test class [data.platform.timescale.MetricValueEventTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2021-04-27 09:49:10.823 main INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [data.platform.timescale.MetricValueEventTest]: MetricValueEventTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2021-04-27 09:49:11.532 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration data.platform.GoldenRetrieverApplication for test class data.platform.timescale.MetricValueEventTest
+2021-04-27 09:49:12.024 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2021-04-27 09:49:12.134 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@75c56eb9, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@4bc222e, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@2dc9b0f5, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@6531a794, org.springframework.test.context.support.DirtiesContextTestExecutionListener@3b5fad2d, org.springframework.test.context.transaction.TransactionalTestExecutionListener@5e17553a, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@3eb91815, org.springframework.test.context.event.EventPublishingTestExecutionListener@56dc1551, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@102cec62, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@74f6c5d8, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@27912e3, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@34b9f960, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@43015c69, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@19b89d4]
+2021-04-27 09:49:13.399 main WARN  o.s.b.t.j.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer - 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/Users/chenhao/.m2/repository/org/json/json/20090211/json-20090211.jar!/org/json/JSONObject.class
+	jar:file:/Users/chenhao/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2021-04-27 09:49:13.462 main INFO  d.p.timescale.MetricValueEventTest - Starting MetricValueEventTest using Java 1.8.0_292 on chenhaodeMacBook-Air.local with PID 7717 (started by chenhao in /Users/chenhao/Documents/GitHub/golden-retriever/application)
+2021-04-27 09:49:13.463 main INFO  d.p.timescale.MetricValueEventTest - The following profiles are active: timescale
+2021-04-27 09:49:15.651 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-04-27 09:49:15.669 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Reactive Cassandra repositories in DEFAULT mode.
+2021-04-27 09:49:15.761 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 73 ms. Found 0 Reactive Cassandra repository interfaces.
+2021-04-27 09:49:15.783 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-04-27 09:49:15.783 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Cassandra repositories in DEFAULT mode.
+2021-04-27 09:49:15.811 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 27 ms. Found 0 Cassandra repository interfaces.
+2021-04-27 09:49:15.895 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-04-27 09:49:15.896 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2021-04-27 09:49:15.922 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 24 ms. Found 0 R2DBC repository interfaces.
+2021-04-27 09:49:17.506 main INFO  d.p.timescale.config.TimeScaleConfig - start timescale module..................
+2021-04-27 09:49:18.540 main INFO  d.p.t.internal.cache.TsCacheService - timescale metric tag cache load starting.........
+2021-04-27 09:49:20.464 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:20.539 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:20.652 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT mt.*, m.name as metric, t.tag_json as tag FROM metric_tag mt LEFT JOIN metric m ON m.id = mt.metric_id LEFT JOIN tag t on t.id = mt.tag_id
+2021-04-27 09:49:20.742 main INFO  d.p.t.internal.cache.TsCacheService - timescale metric tag cache load finish.......
+2021-04-27 09:49:20.743 main INFO  d.p.t.internal.cache.TsCacheService - metric cache size is: [2].
+2021-04-27 09:49:20.743 main INFO  d.p.t.internal.cache.TsCacheService - tag cache size is: [11].
+2021-04-27 09:49:20.743 main INFO  d.p.t.internal.cache.TsCacheService - metric tag cache size is: [18].
+2021-04-27 09:49:20.861 main INFO  d.p.m.domain.DataSetMeterRegistry - publishing metrics to logs every 30s
+2021-04-27 09:49:20.861 main INFO  i.m.c.i.push.PushMeterRegistry - publishing metrics for DataSetMeterRegistry every 30s
+2021-04-27 09:49:22.719 main INFO  d.p.timescale.MetricValueEventTest - Started MetricValueEventTest in 10.296 seconds (JVM running for 17.936)
+2021-04-27 09:49:24.139 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.175 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:24.183 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.201 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:24.303 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.329 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:24.343 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.343 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.367 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:24.402 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.403 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.412 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:24.450 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:24.450 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:24.525 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.565 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.622 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.650 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:24.651 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.673 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:24.703 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.745 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:49:23 CST 2021
+2021-04-27 09:49:24.750 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:24.751 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 1
+2021-04-27 09:49:24.751 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 100.0
+2021-04-27 09:49:24.852 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.931 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:52:23 CST 2021
+2021-04-27 09:49:24.932 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:24.933 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 1
+2021-04-27 09:49:24.933 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 400.0
+2021-04-27 09:49:24.946 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:24.956 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.962 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.969 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.994 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:24.995 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:24.995 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:50:23 CST 2021
+2021-04-27 09:49:24.995 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:24.996 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 1
+2021-04-27 09:49:24.996 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 200.0
+2021-04-27 09:49:25.003 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.006 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.017 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:25.018 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:25.020 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:25.022 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:25.047 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:52:23 CST 2021
+2021-04-27 09:49:25.047 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.048 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 3
+2021-04-27 09:49:25.048 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 900.0
+2021-04-27 09:49:25.055 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:25.078 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:51:23 CST 2021
+2021-04-27 09:49:25.079 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.079 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 1
+2021-04-27 09:49:25.079 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 300.0
+2021-04-27 09:49:25.119 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:25.124 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:25.133 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:50:23 CST 2021
+2021-04-27 09:49:25.133 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.133 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 24
+2021-04-27 09:49:25.134 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 1200.0
+2021-04-27 09:49:25.135 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:25.199 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:50:23 CST 2021
+2021-04-27 09:49:25.200 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.200 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 3
+2021-04-27 09:49:25.200 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 700.0
+2021-04-27 09:49:25.212 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:53:23 CST 2021
+2021-04-27 09:49:25.213 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.213 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 3
+2021-04-27 09:49:25.213 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 1000.0
+2021-04-27 09:49:25.276 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:53:23 CST 2021
+2021-04-27 09:49:25.276 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.276 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 1
+2021-04-27 09:49:25.276 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 500.0
+2021-04-27 09:49:25.307 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.396 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:49:23 CST 2021
+2021-04-27 09:49:25.396 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.396 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 24
+2021-04-27 09:49:25.397 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 1100.0
+2021-04-27 09:49:25.432 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.490 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.505 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.506 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.520 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.532 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:50:23 CST 2021
+2021-04-27 09:49:25.533 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.533 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 23
+2021-04-27 09:49:25.533 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 2200.0
+2021-04-27 09:49:25.536 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.581 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.682 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:51:23 CST 2021
+2021-04-27 09:49:25.683 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.683 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 2
+2021-04-27 09:49:25.683 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 1800.0
+2021-04-27 09:49:25.855 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:50:23 CST 2021
+2021-04-27 09:49:25.856 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.857 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 2
+2021-04-27 09:49:25.857 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 1700.0
+2021-04-27 09:49:25.860 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.864 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:49:23 CST 2021
+2021-04-27 09:49:25.864 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.864 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 23
+2021-04-27 09:49:25.865 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 2100.0
+2021-04-27 09:49:25.875 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.885 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.907 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:52:23 CST 2021
+2021-04-27 09:49:25.907 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.908 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 24
+2021-04-27 09:49:25.909 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 1400.0
+2021-04-27 09:49:25.910 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:25.910 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:53:23 CST 2021
+2021-04-27 09:49:25.911 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.911 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 2
+2021-04-27 09:49:25.911 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 2000.0
+2021-04-27 09:49:25.911 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:52:23 CST 2021
+2021-04-27 09:49:25.912 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.912 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 2
+2021-04-27 09:49:25.913 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 1900.0
+2021-04-27 09:49:25.984 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:51:23 CST 2021
+2021-04-27 09:49:25.984 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:25.984 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 24
+2021-04-27 09:49:25.985 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 1300.0
+2021-04-27 09:49:26.002 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:51:23 CST 2021
+2021-04-27 09:49:26.003 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:26.003 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 3
+2021-04-27 09:49:26.003 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 800.0
+2021-04-27 09:49:26.011 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:53:23 CST 2021
+2021-04-27 09:49:26.012 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:26.012 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 24
+2021-04-27 09:49:26.012 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 1500.0
+2021-04-27 09:49:26.034 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:49:23 CST 2021
+2021-04-27 09:49:26.034 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:26.034 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 3
+2021-04-27 09:49:26.035 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 600.0
+2021-04-27 09:49:26.038 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:49:23 CST 2021
+2021-04-27 09:49:26.039 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:26.039 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 2
+2021-04-27 09:49:26.039 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 1600.0
+2021-04-27 09:49:26.044 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:52:23 CST 2021
+2021-04-27 09:49:26.045 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:26.045 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 23
+2021-04-27 09:49:26.046 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 2400.0
+2021-04-27 09:49:26.053 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:51:23 CST 2021
+2021-04-27 09:49:26.053 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:26.053 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 23
+2021-04-27 09:49:26.053 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 2300.0
+2021-04-27 09:49:26.074 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: Tue Apr 27 09:53:23 CST 2021
+2021-04-27 09:49:26.074 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 37
+2021-04-27 09:49:26.074 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: 23
+2021-04-27 09:49:26.075 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: 2500.0
+2021-04-27 09:49:51.185 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [data.platform.timescale.TsMetricResultQueryServiceTest], using SpringBootContextLoader
+2021-04-27 09:49:51.205 main INFO  o.s.t.c.s.AbstractContextLoader - Could not detect default resource locations for test class [data.platform.timescale.TsMetricResultQueryServiceTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2021-04-27 09:49:51.207 main INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [data.platform.timescale.TsMetricResultQueryServiceTest]: TsMetricResultQueryServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2021-04-27 09:49:51.526 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration data.platform.GoldenRetrieverApplication for test class data.platform.timescale.TsMetricResultQueryServiceTest
+2021-04-27 09:49:51.780 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2021-04-27 09:49:51.827 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@6531a794, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@3b5fad2d, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@5e17553a, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@3eb91815, org.springframework.test.context.support.DirtiesContextTestExecutionListener@56dc1551, org.springframework.test.context.transaction.TransactionalTestExecutionListener@102cec62, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@74f6c5d8, org.springframework.test.context.event.EventPublishingTestExecutionListener@27912e3, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@34b9f960, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@43015c69, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@19b89d4, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@4bbf6d0e, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@30b6ffe0, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@791d1f8b]
+2021-04-27 09:49:52.967 main WARN  o.s.b.t.j.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer - 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/Users/chenhao/.m2/repository/org/json/json/20090211/json-20090211.jar!/org/json/JSONObject.class
+	jar:file:/Users/chenhao/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2021-04-27 09:49:53.031 main INFO  d.p.t.TsMetricResultQueryServiceTest - Starting TsMetricResultQueryServiceTest using Java 1.8.0_292 on chenhaodeMacBook-Air.local with PID 7725 (started by chenhao in /Users/chenhao/Documents/GitHub/golden-retriever/application)
+2021-04-27 09:49:53.032 main INFO  d.p.t.TsMetricResultQueryServiceTest - The following profiles are active: timescale
+2021-04-27 09:49:54.891 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-04-27 09:49:54.904 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Reactive Cassandra repositories in DEFAULT mode.
+2021-04-27 09:49:54.997 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 84 ms. Found 0 Reactive Cassandra repository interfaces.
+2021-04-27 09:49:55.008 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-04-27 09:49:55.009 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Cassandra repositories in DEFAULT mode.
+2021-04-27 09:49:55.056 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 45 ms. Found 0 Cassandra repository interfaces.
+2021-04-27 09:49:55.085 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-04-27 09:49:55.087 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2021-04-27 09:49:55.119 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 31 ms. Found 0 R2DBC repository interfaces.
+2021-04-27 09:49:56.269 main INFO  d.p.timescale.config.TimeScaleConfig - start timescale module..................
+2021-04-27 09:49:56.672 main INFO  d.p.t.internal.cache.TsCacheService - timescale metric tag cache load starting.........
+2021-04-27 09:49:57.607 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:49:57.635 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:49:57.664 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT mt.*, m.name as metric, t.tag_json as tag FROM metric_tag mt LEFT JOIN metric m ON m.id = mt.metric_id LEFT JOIN tag t on t.id = mt.tag_id
+2021-04-27 09:49:57.748 main INFO  d.p.t.internal.cache.TsCacheService - timescale metric tag cache load finish.......
+2021-04-27 09:49:57.749 main INFO  d.p.t.internal.cache.TsCacheService - metric cache size is: [2].
+2021-04-27 09:49:57.749 main INFO  d.p.t.internal.cache.TsCacheService - tag cache size is: [11].
+2021-04-27 09:49:57.749 main INFO  d.p.t.internal.cache.TsCacheService - metric tag cache size is: [18].
+2021-04-27 09:49:57.827 main INFO  d.p.m.domain.DataSetMeterRegistry - publishing metrics to logs every 30s
+2021-04-27 09:49:57.828 main INFO  i.m.c.i.push.PushMeterRegistry - publishing metrics for DataSetMeterRegistry every 30s
+2021-04-27 09:49:59.431 main INFO  d.p.t.TsMetricResultQueryServiceTest - Started TsMetricResultQueryServiceTest in 7.431 seconds (JVM running for 11.412)
+2021-04-27 09:50:00.080 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:50:00.092 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:50:00.105 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:50:00.120 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:50:00.161 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: 37
+2021-04-27 09:50:00.163 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: 37
+2021-04-27 09:50:00.168 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 24
+2021-04-27 09:50:00.168 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: Mon Apr 26 16:00:00 CST 2021
+2021-04-27 09:50:00.169 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 1
+2021-04-27 09:50:00.170 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: Mon Apr 26 16:59:59 CST 2021
+2021-04-27 09:50:00.170 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: Mon Apr 26 16:00:00 CST 2021
+2021-04-27 09:50:00.171 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: Mon Apr 26 16:59:59 CST 2021
+2021-04-27 09:50:00.550 main INFO  d.p.t.TsMetricResultQueryServiceTest - {
+  "queries" : [ {
+    "results" : [ {
+      "name" : "CPU_LOAD",
+      "tags" : {
+        "host" : [ "30.0.0.1" ],
+        "location" : [ "sh" ],
+        "room" : [ "r01" ]
+      },
+      "values" : [ {
+        "timestamp" : "2021-04-26 16:12:38",
+        "value" : 100.0
+      }, {
+        "timestamp" : "2021-04-26 16:13:38",
+        "value" : 200.0
+      }, {
+        "timestamp" : "2021-04-26 16:14:38",
+        "value" : 300.0
+      }, {
+        "timestamp" : "2021-04-26 16:15:38",
+        "value" : 400.0
+      }, {
+        "timestamp" : "2021-04-26 16:16:38",
+        "value" : 500.0
+      } ],
+      "group_by" : [ ]
+    }, {
+      "name" : "CPU_LOAD",
+      "tags" : {
+        "host" : [ "30.0.0.3" ],
+        "location" : [ "sh" ],
+        "room" : [ "r02" ]
+      },
+      "values" : [ {
+        "timestamp" : "2021-04-26 16:12:38",
+        "value" : 1100.0
+      }, {
+        "timestamp" : "2021-04-26 16:13:38",
+        "value" : 1200.0
+      }, {
+        "timestamp" : "2021-04-26 16:14:38",
+        "value" : 1300.0
+      }, {
+        "timestamp" : "2021-04-26 16:15:38",
+        "value" : 1400.0
+      }, {
+        "timestamp" : "2021-04-26 16:16:38",
+        "value" : 1500.0
+      } ],
+      "group_by" : [ ]
+    } ],
+    "sample_size" : 10
+  } ]
+}
+2021-04-27 09:50:29.920 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [data.platform.timescale.TsMetricResultQueryServiceTest], using SpringBootContextLoader
+2021-04-27 09:50:29.949 main INFO  o.s.t.c.s.AbstractContextLoader - Could not detect default resource locations for test class [data.platform.timescale.TsMetricResultQueryServiceTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2021-04-27 09:50:29.951 main INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [data.platform.timescale.TsMetricResultQueryServiceTest]: TsMetricResultQueryServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2021-04-27 09:50:30.257 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration data.platform.GoldenRetrieverApplication for test class data.platform.timescale.TsMetricResultQueryServiceTest
+2021-04-27 09:50:30.543 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2021-04-27 09:50:30.588 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@6531a794, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@3b5fad2d, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@5e17553a, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@3eb91815, org.springframework.test.context.support.DirtiesContextTestExecutionListener@56dc1551, org.springframework.test.context.transaction.TransactionalTestExecutionListener@102cec62, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@74f6c5d8, org.springframework.test.context.event.EventPublishingTestExecutionListener@27912e3, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@34b9f960, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@43015c69, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@19b89d4, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@4bbf6d0e, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@30b6ffe0, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@791d1f8b]
+2021-04-27 09:50:31.455 main WARN  o.s.b.t.j.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer - 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/Users/chenhao/.m2/repository/org/json/json/20090211/json-20090211.jar!/org/json/JSONObject.class
+	jar:file:/Users/chenhao/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2021-04-27 09:50:31.543 main INFO  d.p.t.TsMetricResultQueryServiceTest - Starting TsMetricResultQueryServiceTest using Java 1.8.0_292 on chenhaodeMacBook-Air.local with PID 7729 (started by chenhao in /Users/chenhao/Documents/GitHub/golden-retriever/application)
+2021-04-27 09:50:31.544 main INFO  d.p.t.TsMetricResultQueryServiceTest - The following profiles are active: timescale
+2021-04-27 09:50:33.265 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-04-27 09:50:33.280 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Reactive Cassandra repositories in DEFAULT mode.
+2021-04-27 09:50:33.402 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 108 ms. Found 0 Reactive Cassandra repository interfaces.
+2021-04-27 09:50:33.413 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-04-27 09:50:33.414 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Cassandra repositories in DEFAULT mode.
+2021-04-27 09:50:33.448 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 32 ms. Found 0 Cassandra repository interfaces.
+2021-04-27 09:50:33.490 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-04-27 09:50:33.491 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2021-04-27 09:50:33.525 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 32 ms. Found 0 R2DBC repository interfaces.
+2021-04-27 09:50:34.558 main INFO  d.p.timescale.config.TimeScaleConfig - start timescale module..................
+2021-04-27 09:50:34.969 main INFO  d.p.t.internal.cache.TsCacheService - timescale metric tag cache load starting.........
+2021-04-27 09:50:35.968 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:50:35.995 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:50:36.035 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT mt.*, m.name as metric, t.tag_json as tag FROM metric_tag mt LEFT JOIN metric m ON m.id = mt.metric_id LEFT JOIN tag t on t.id = mt.tag_id
+2021-04-27 09:50:36.116 main INFO  d.p.t.internal.cache.TsCacheService - timescale metric tag cache load finish.......
+2021-04-27 09:50:36.117 main INFO  d.p.t.internal.cache.TsCacheService - metric cache size is: [2].
+2021-04-27 09:50:36.117 main INFO  d.p.t.internal.cache.TsCacheService - tag cache size is: [11].
+2021-04-27 09:50:36.117 main INFO  d.p.t.internal.cache.TsCacheService - metric tag cache size is: [18].
+2021-04-27 09:50:36.202 main INFO  d.p.m.domain.DataSetMeterRegistry - publishing metrics to logs every 30s
+2021-04-27 09:50:36.204 main INFO  i.m.c.i.push.PushMeterRegistry - publishing metrics for DataSetMeterRegistry every 30s
+2021-04-27 09:50:37.636 main INFO  d.p.t.TsMetricResultQueryServiceTest - Started TsMetricResultQueryServiceTest in 6.877 seconds (JVM running for 10.821)
+2021-04-27 09:50:38.140 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:50:38.144 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:50:38.156 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:50:38.166 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:50:38.188 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: 37
+2021-04-27 09:50:38.198 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 2
+2021-04-27 09:50:38.198 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: Mon Apr 26 16:00:00 CST 2021
+2021-04-27 09:50:38.200 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: Mon Apr 26 16:59:59 CST 2021
+2021-04-27 09:50:38.201 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: 37
+2021-04-27 09:50:38.201 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 1
+2021-04-27 09:50:38.201 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: Mon Apr 26 16:00:00 CST 2021
+2021-04-27 09:50:38.202 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: Mon Apr 26 16:59:59 CST 2021
+2021-04-27 09:50:38.494 main INFO  d.p.t.TsMetricResultQueryServiceTest - {
+  "queries" : [ {
+    "results" : [ {
+      "name" : "CPU_LOAD",
+      "tags" : {
+        "host" : [ "30.0.0.1" ],
+        "location" : [ "sh" ],
+        "room" : [ "r01" ]
+      },
+      "values" : [ {
+        "timestamp" : "2021-04-26 16:12:38",
+        "value" : 100.0
+      }, {
+        "timestamp" : "2021-04-26 16:13:38",
+        "value" : 200.0
+      }, {
+        "timestamp" : "2021-04-26 16:14:38",
+        "value" : 300.0
+      }, {
+        "timestamp" : "2021-04-26 16:15:38",
+        "value" : 400.0
+      }, {
+        "timestamp" : "2021-04-26 16:16:38",
+        "value" : 500.0
+      } ],
+      "group_by" : [ ]
+    } ],
+    "sample_size" : 5
+  }, {
+    "results" : [ {
+      "name" : "CPU_LOAD",
+      "tags" : {
+        "host" : [ "10.0.0.1" ],
+        "location" : [ "bj" ],
+        "room" : [ "r01" ]
+      },
+      "values" : [ {
+        "timestamp" : "2021-04-26 16:12:38",
+        "value" : 1600.0
+      }, {
+        "timestamp" : "2021-04-26 16:13:38",
+        "value" : 1700.0
+      }, {
+        "timestamp" : "2021-04-26 16:14:38",
+        "value" : 1800.0
+      }, {
+        "timestamp" : "2021-04-26 16:15:38",
+        "value" : 1900.0
+      }, {
+        "timestamp" : "2021-04-26 16:16:38",
+        "value" : 2000.0
+      } ],
+      "group_by" : [ ]
+    } ],
+    "sample_size" : 5
+  } ]
+}
+2021-04-27 09:50:51.802 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [data.platform.timescale.TsMetricResultQueryServiceTest], using SpringBootContextLoader
+2021-04-27 09:50:51.816 main INFO  o.s.t.c.s.AbstractContextLoader - Could not detect default resource locations for test class [data.platform.timescale.TsMetricResultQueryServiceTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2021-04-27 09:50:51.818 main INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [data.platform.timescale.TsMetricResultQueryServiceTest]: TsMetricResultQueryServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2021-04-27 09:50:52.230 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration data.platform.GoldenRetrieverApplication for test class data.platform.timescale.TsMetricResultQueryServiceTest
+2021-04-27 09:50:52.705 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2021-04-27 09:50:52.767 main INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@6531a794, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@3b5fad2d, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@5e17553a, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@3eb91815, org.springframework.test.context.support.DirtiesContextTestExecutionListener@56dc1551, org.springframework.test.context.transaction.TransactionalTestExecutionListener@102cec62, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@74f6c5d8, org.springframework.test.context.event.EventPublishingTestExecutionListener@27912e3, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@34b9f960, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@43015c69, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@19b89d4, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@4bbf6d0e, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@30b6ffe0, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@791d1f8b]
+2021-04-27 09:50:53.747 main WARN  o.s.b.t.j.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer - 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/Users/chenhao/.m2/repository/org/json/json/20090211/json-20090211.jar!/org/json/JSONObject.class
+	jar:file:/Users/chenhao/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2021-04-27 09:50:53.869 main INFO  d.p.t.TsMetricResultQueryServiceTest - Starting TsMetricResultQueryServiceTest using Java 1.8.0_292 on chenhaodeMacBook-Air.local with PID 7733 (started by chenhao in /Users/chenhao/Documents/GitHub/golden-retriever/application)
+2021-04-27 09:50:53.870 main INFO  d.p.t.TsMetricResultQueryServiceTest - The following profiles are active: timescale
+2021-04-27 09:50:55.889 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-04-27 09:50:55.894 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Reactive Cassandra repositories in DEFAULT mode.
+2021-04-27 09:50:55.965 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 64 ms. Found 0 Reactive Cassandra repository interfaces.
+2021-04-27 09:50:55.974 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-04-27 09:50:55.975 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Cassandra repositories in DEFAULT mode.
+2021-04-27 09:50:56.014 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 37 ms. Found 0 Cassandra repository interfaces.
+2021-04-27 09:50:56.041 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-04-27 09:50:56.042 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2021-04-27 09:50:56.066 main INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 23 ms. Found 0 R2DBC repository interfaces.
+2021-04-27 09:50:57.068 main INFO  d.p.timescale.config.TimeScaleConfig - start timescale module..................
+2021-04-27 09:50:57.533 main INFO  d.p.t.internal.cache.TsCacheService - timescale metric tag cache load starting.........
+2021-04-27 09:50:58.869 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:50:58.893 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:50:58.926 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT mt.*, m.name as metric, t.tag_json as tag FROM metric_tag mt LEFT JOIN metric m ON m.id = mt.metric_id LEFT JOIN tag t on t.id = mt.tag_id
+2021-04-27 09:50:59.004 main INFO  d.p.t.internal.cache.TsCacheService - timescale metric tag cache load finish.......
+2021-04-27 09:50:59.004 main INFO  d.p.t.internal.cache.TsCacheService - metric cache size is: [2].
+2021-04-27 09:50:59.004 main INFO  d.p.t.internal.cache.TsCacheService - tag cache size is: [11].
+2021-04-27 09:50:59.005 main INFO  d.p.t.internal.cache.TsCacheService - metric tag cache size is: [18].
+2021-04-27 09:50:59.073 main INFO  d.p.m.domain.DataSetMeterRegistry - publishing metrics to logs every 30s
+2021-04-27 09:50:59.074 main INFO  i.m.c.i.push.PushMeterRegistry - publishing metrics for DataSetMeterRegistry every 30s
+2021-04-27 09:51:00.589 main INFO  d.p.t.TsMetricResultQueryServiceTest - Started TsMetricResultQueryServiceTest in 7.706 seconds (JVM running for 11.343)
+2021-04-27 09:51:01.221 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:51:01.222 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:51:01.245 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:51:01.245 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:51:01.250 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SHOW TRANSACTION ISOLATION LEVEL
+2021-04-27 09:51:01.270 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:51:01.287 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:51:01.295 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:51:01.318 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:51:01.328 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.QUERY - Executing query: SELECT oid, typname FROM pg_catalog.pg_type WHERE typname IN ('hstore')
+2021-04-27 09:51:01.374 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: 37
+2021-04-27 09:51:01.375 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: 37
+2021-04-27 09:51:01.375 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: 37
+2021-04-27 09:51:01.381 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 24
+2021-04-27 09:51:01.381 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 1
+2021-04-27 09:51:01.381 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: Mon Apr 26 16:00:00 CST 2021
+2021-04-27 09:51:01.381 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: Mon Apr 26 16:00:00 CST 2021
+2021-04-27 09:51:01.382 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 3
+2021-04-27 09:51:01.382 reactor-tcp-nio-4 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: Mon Apr 26 16:59:59 CST 2021
+2021-04-27 09:51:01.383 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: Mon Apr 26 16:00:00 CST 2021
+2021-04-27 09:51:01.383 reactor-tcp-nio-3 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: Mon Apr 26 16:59:59 CST 2021
+2021-04-27 09:51:01.383 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: Mon Apr 26 16:59:59 CST 2021
+2021-04-27 09:51:01.394 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: 37
+2021-04-27 09:51:01.394 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 23
+2021-04-27 09:51:01.395 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: Mon Apr 26 16:00:00 CST 2021
+2021-04-27 09:51:01.395 reactor-tcp-nio-1 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: Mon Apr 26 16:59:59 CST 2021
+2021-04-27 09:51:01.426 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [0] to: 37
+2021-04-27 09:51:01.427 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [1] to: 2
+2021-04-27 09:51:01.427 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [2] to: Mon Apr 26 16:00:00 CST 2021
+2021-04-27 09:51:01.428 reactor-tcp-nio-2 DEBUG io.r2dbc.postgresql.PARAM - Bind parameter [3] to: Mon Apr 26 16:59:59 CST 2021
+2021-04-27 09:51:01.879 main INFO  d.p.t.TsMetricResultQueryServiceTest - {
+  "queries" : [ {
+    "results" : [ {
+      "name" : "CPU_LOAD",
+      "tags" : {
+        "host" : [ "10.0.0.2" ],
+        "location" : [ "bj" ],
+        "room" : [ "r02" ]
+      },
+      "values" : [ {
+        "timestamp" : "2021-04-26 16:00:00",
+        "value" : 2500.0
+      } ],
+      "group_by" : [ ]
+    }, {
+      "name" : "CPU_LOAD",
+      "tags" : {
+        "host" : [ "10.0.0.1" ],
+        "location" : [ "bj" ],
+        "room" : [ "r01" ]
+      },
+      "values" : [ {
+        "timestamp" : "2021-04-26 16:00:00",
+        "value" : 2000.0
+      } ],
+      "group_by" : [ ]
+    } ],
+    "sample_size" : 2
+  }, {
+    "results" : [ {
+      "name" : "CPU_LOAD",
+      "tags" : {
+        "host" : [ "30.0.0.1" ],
+        "location" : [ "sh" ],
+        "room" : [ "r01" ]
+      },
+      "values" : [ {
+        "timestamp" : "2021-04-26 16:00:00",
+        "value" : 300.0
+      } ],
+      "group_by" : [ ]
+    }, {
+      "name" : "CPU_LOAD",
+      "tags" : {
+        "host" : [ "30.0.0.2" ],
+        "location" : [ "sh" ],
+        "room" : [ "r01" ]
+      },
+      "values" : [ {
+        "timestamp" : "2021-04-26 16:00:00",
+        "value" : 800.0
+      } ],
+      "group_by" : [ ]
+    }, {
+      "name" : "CPU_LOAD",
+      "tags" : {
+        "host" : [ "30.0.0.3" ],
+        "location" : [ "sh" ],
+        "room" : [ "r02" ]
+      },
+      "values" : [ {
+        "timestamp" : "2021-04-26 16:00:00",
+        "value" : 1300.0
+      } ],
+      "group_by" : [ ]
+    } ],
+    "sample_size" : 3
+  } ]
+}
