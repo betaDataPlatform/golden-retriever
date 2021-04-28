@@ -31,7 +31,7 @@ public class DataPointEO {
         DataPoint dataPoint = new DataPoint();
         LocalDateTime localDateTime = LocalDateTime.of(dataPointKey.getPartition(),dataPointKey.getOffset());
         Date eventTime = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-        dataPoint.setTimestamp(eventTime);
+        dataPoint.setTimestamp(eventTime.getTime());
         dataPoint.setValue(value);
         return dataPoint;
     }

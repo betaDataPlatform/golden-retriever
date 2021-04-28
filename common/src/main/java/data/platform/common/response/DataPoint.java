@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class DataPoint {
 
-    private Date timestamp;
+    private long timestamp;
 
     private Object value;
 }

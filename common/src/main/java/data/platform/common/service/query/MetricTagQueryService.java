@@ -9,7 +9,7 @@ public interface MetricTagQueryService {
 
     Flux<String> filterTagKeyOfMetric(String metric);
 
-    Flux<String> filterTagValueOfMetric(String metric, String tagKey);
+    Flux<String> filterTagValueOfMetric(String metric, String tagKey, String tagValue);
 
     Flux<MetricTag> findMetricTag(String metric, String tagName, String tagValue);
 }

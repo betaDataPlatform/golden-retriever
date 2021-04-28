@@ -37,4 +37,21 @@ public enum QueryAggregatorUnit {
     public String getDescription() {
         return description;
     }
+
+    public static QueryAggregatorUnit getAggregatorUnitFromDesc(String description) {
+        switch (description) {
+            case "avg":
+                return AVG;
+            case "count":
+                return COUNT;
+            case "max":
+                return MAX;
+            case "min":
+                return MIN;
+            case "sum":
+                return SUM;
+            default:
+                return PLAIN;
+        }
+    }
 }

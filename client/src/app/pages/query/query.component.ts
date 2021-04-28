@@ -3,12 +3,21 @@ import { HttpClient } from '@angular/common/http';
 
 import * as Highcharts from 'highcharts';
 
+import { QueryBuilder } from './QueryBuilder';
+import { Metric } from './Metric';
+import { Aggregator } from './Aggregator';
+import { GroupBy } from './GroupBy';
+
 @Component({
   selector: 'app-query',
   templateUrl: './query.component.html',
-  styleUrls: ['./query.component.css']
+  styleUrls: ['./query.component.css'],
 })
 export class QueryComponent implements OnInit {
+  beginDate: Date = new Date();
+  endDate: Date = new Date();
+
+  queryDate: Date[] = [];
 
   ranges = { Today: [new Date(), new Date()] };
 
@@ -19,7 +28,7 @@ export class QueryComponent implements OnInit {
   groupBys = [];
   tagsOfMetric = [];
 
-  selectedAggregator = null;
+  selectedAggregator = '';
   aggregators: Array<{ label: string; value: string }> = [];
 
   tags: Array<{ tagKey: string; tagValue: string }> = [];
@@ -30,50 +39,49 @@ export class QueryComponent implements OnInit {
   seriesData: Array<any> = [1, 2, 3, 4];
   chartOptions: Highcharts.Options = {
     chart: {
-      type: 'spline'
+      type: 'spline',
+    },
+    tooltip: {
+      headerFormat: '<b>{series.name}</b><br>',
+      pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}: {point.y:.2f}',
     },
     series: [
       {
         type: 'line',
-        data: []
-      }
-    ]
+        data: [],
+      },
+    ],
   };
 
-  constructor(private httpClient: HttpClient) { }
+  queryBuilder: QueryBuilder = new QueryBuilder();
+
+  constructor(private httpClient: HttpClient) {}
 
   ngOnInit() {
-    let beginDate = new Date();
-    beginDate.setHours(0, 0, 0, 0);
-    let endDate = new Date();
-    endDate.setHours(23, 59, 59, 999);
-    this.ranges.Today = [beginDate, endDate];
+    this.beginDate.setHours(0, 0, 0, 0);
+    this.endDate.setHours(23, 59, 59, 999);
+    this.queryDate = [this.beginDate, this.endDate];
 
-    this.aggregators.push({ label: "平均值", value: "AVG" });
-    this.aggregators.push({ label: "最大值", value: "MAX" });
-    this.aggregators.push({ label: "最小值", value: "MIN" });
-    this.aggregators.push({ label: "总和值", value: "SUM" });
+    this.ranges.Today = [this.beginDate, this.endDate];
 
-    this.tags.push({ tagKey: "", tagValue: "" });
+    this.aggregators.push({ label: '平均值', value: 'avg' });
+    this.aggregators.push({ label: '最大值', value: 'max' });
+    this.aggregators.push({ label: '最小值', value: 'min' });
+    this.aggregators.push({ label: '总和值', value: 'sum' });
 
-  }
-
-  onDateOk(result: Date | Date[] | null): void {
-    console.log('onOk', result);
+    this.tags.push({ tagKey: '', tagValue: '' });
   }
 
   onMetricSerach(value: string): void {
     if (value === '') {
       return;
     }
-    let url = "/api/metricTag/queryMetric";
+    let url = '/api/metricTag/queryMetric';
     let body: any = {};
-    body["metric"] = value;
-    this.httpClient
-      .post(url, body, {})
-      .subscribe((data: any) => {
-        this.metrics = data;
-      });
+    body['metric'] = value;
+    this.httpClient.post(url, body, {}).subscribe((data: any) => {
+      this.metrics = data;
+    });
   }
 
   queryTagKeyOfMetric() {
@@ -81,37 +89,34 @@ export class QueryComponent implements OnInit {
     if (this.selectedMetric === '') {
       return;
     }
-    let url = "/api/metricTag/queryTagKeyOfMetric";
+    let url = '/api/metricTag/queryTagKeyOfMetric';
     let body: any = {};
-    body["metric"] = this.selectedMetric;
-    this.httpClient
-      .post(url, body, {})
-      .subscribe((data: any) => {
-        this.tagsOfMetric = data;
-      });
+    body['metric'] = this.selectedMetric;
+    this.httpClient.post(url, body, {}).subscribe((data: any) => {
+      this.tagsOfMetric = data;
+    });
   }
 
-  queryTagValueOfMetric(index: number,value: string) {
+  queryTagValueOfMetric(index: number, value: string) {
     console.log(this.selectedMetric);
     if (this.selectedMetric === '') {
       return;
     }
-    let url = "/api/metricTag/queryTagKeyOfMetric";
+    let url = '/api/metricTag/queryTagValueOfMetric';
     let body: any = {};
-    body["metric"] = this.selectedMetric;
-    body["tagKey"] = this.tags[index].tagKey;
-    this.httpClient
-      .post(url, body, {})
-      .subscribe((data: any) => {
-        this.tags[index].tagValue = data;
-      });
+    body['metric'] = this.selectedMetric;
+    body['tagKey'] = this.tags[index].tagKey;
+    body['tagValue'] = value;
+    this.httpClient.post(url, body, {}).subscribe((data: any) => {
+      this.tagValues = data;
+    });
   }
 
   addTag(e?: MouseEvent): void {
     if (e) {
       e.preventDefault();
     }
-    this.tags.push({ tagKey: "", tagValue: "" });
+    this.tags.push({ tagKey: '', tagValue: '' });
   }
 
   deleteTag(index: number, e: MouseEvent): void {
@@ -122,36 +127,82 @@ export class QueryComponent implements OnInit {
   }
 
   onSearch(): void {
+    let metric: Metric = new Metric();
+    metric.name = this.selectedMetric;
 
-    this.seriesData = [1, 2, 3, 4];
-    this.chartOptions = {
-      chart: {
-        type: 'spline'
-      },
-      title: {
-        text: 'updated'
-      },
-      xAxis: {
-        type: 'datetime',
-        dateTimeLabelFormats: {
-          day: '%m-%d'
-        },
-        labels: {
-          overflow: 'justify'
+    this.tags.forEach(function (tag) {
+      if (tag.tagKey !== '' && tag.tagValue !== '') {
+        if (!metric.tags[tag.tagKey]) {
+          metric.tags[tag.tagKey] = [tag.tagValue];
+        } else {
+          metric.tags[tag.tagKey].push(tag.tagValue);
         }
-      },
-      tooltip: {
-        headerFormat: '<b>{series.name}</b><br>',
-        pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}: {point.y:.2f}'
-      },
-      series: [
-        {
-          type: 'line',
-          data: this.seriesData
-        }
-      ]
-    };
+      }
+    });
 
-    this.updateFlag = true;
+    if (this.selectedAggregator !== '') {
+      let aggregator: Aggregator = new Aggregator();
+      aggregator.name = this.selectedAggregator;
+      metric.aggregators = [aggregator];
+    }
+
+    let groupBy: GroupBy = new GroupBy();
+    groupBy.tags = this.groupBys;
+    metric.group_by = [groupBy];
+
+    this.queryBuilder.start_absolute = this.queryDate[0].getTime();
+    this.queryBuilder.end_absolute = this.queryDate[1].getTime();
+
+    this.queryBuilder.metrics = [metric];
+
+    console.log(this.queryBuilder);
+
+    this.httpClient
+      .post('/api/v1/datapoints/query', this.queryBuilder, {
+        observe: 'response',
+      })
+      .subscribe((response) => {
+        console.log(response.headers.get('executetime'));
+        let series = [];
+        let config: any = { ...response.body };
+        let results = config['queries'][0].results;
+        for (let i = 0; i < results.length; i++) {
+          let serie: any = {};
+
+          let result = results[i];
+
+          serie['name'] = JSON.stringify(result.tags);
+          serie['data'] = [];
+          let values = result.values;
+          values.forEach((element: any) => {
+            serie['data'].push([element['timestamp'], element['value']]);
+          });
+          series.push(serie);
+        }
+
+        this.chartOptions = {
+          chart: {
+            type: 'spline',
+          },
+          title: {
+            text: '执行时间：' + response.headers.get('executetime') + ' ms',
+          },
+          time: {
+            useUTC: false,
+          },
+          xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats: {
+              day: '%m-%d',
+            },
+            labels: {
+              overflow: 'justify',
+            },
+          },          
+          series: series,
+        };
+
+        this.updateFlag = true;
+      });
   }
 }

@@ -18,7 +18,7 @@ import lombok.Setter;
 public class QueryAggregator {
 
     @JsonProperty("name")
-    private QueryAggregatorUnit aggregatorUnit;
+    private String name;
 
     @JsonProperty("sampling")
     // 业务上只实现开始时间和结束时间的统计
@@ -39,4 +39,10 @@ public class QueryAggregator {
     @JsonProperty("start_time")
     private Long startTime;
 
+    @JsonIgnoreProperties
+    private QueryAggregatorUnit aggregatorUnit;
+
+    public QueryAggregatorUnit getAggregatorUnit() {
+         return QueryAggregatorUnit.getAggregatorUnitFromDesc(name);
+    }
 }

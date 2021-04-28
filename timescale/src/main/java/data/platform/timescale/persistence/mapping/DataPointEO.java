@@ -38,7 +38,7 @@ public class DataPointEO {
 
     public DataPoint toDataPoint() {
         DataPoint dataPoint = new DataPoint();
-        dataPoint.setTimestamp(eventTime);
+        dataPoint.setTimestamp(eventTime.getTime());
         dataPoint.setValue(value);
         return dataPoint;
     }

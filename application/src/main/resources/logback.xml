@@ -34,8 +34,8 @@
     <logger name="org.springframework.data.cassandra.core.cql.ReactiveCqlTemplate" level="debug" />
     <logger name="org.springframework.data.cassandra.core.cql.DefaultBridgedReactiveSession" level="debug"/>
     <logger name="org.springframework.data.r2dbc" level="debug" />
+
     <logger name="io.r2dbc.postgresql.QUERY" level="debug" />
     <logger name="io.r2dbc.postgresql.PARAM" level="debug" />
-
 
 </configuration>

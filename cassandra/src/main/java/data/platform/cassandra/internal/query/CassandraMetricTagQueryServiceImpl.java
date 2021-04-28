@@ -28,7 +28,7 @@ public class CassandraMetricTagQueryServiceImpl implements MetricTagQueryService
     }
 
     @Override
-    public Flux<String> filterTagValueOfMetric(String metric, String tagKey) {
+    public Flux<String> filterTagValueOfMetric(String metric, String tagKey, String tagValue) {
         return null;
     }
 

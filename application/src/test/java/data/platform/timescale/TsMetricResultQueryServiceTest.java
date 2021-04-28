@@ -34,8 +34,8 @@ public class TsMetricResultQueryServiceTest {
         QueryBuilder queryBuilder = new QueryBuilder();
 
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime beginLocalDateTime = LocalDateTime.parse("2021-04-26 16:00:00", df);
-        LocalDateTime endLocalDateTime = LocalDateTime.parse("2021-04-26 16:59:59", df);
+        LocalDateTime beginLocalDateTime = LocalDateTime.parse("2021-04-28 22:00:00", df);
+        LocalDateTime endLocalDateTime = LocalDateTime.parse("2021-04-28 22:59:59", df);
         Date beginDateTime = Date.from(beginLocalDateTime.atZone( ZoneId.systemDefault()).toInstant());
         Date endDateTime = Date.from(endLocalDateTime.atZone( ZoneId.systemDefault()).toInstant());
         queryBuilder.setBeginDate(beginDateTime.getTime());
@@ -133,7 +133,7 @@ public class TsMetricResultQueryServiceTest {
         queryMetric1.setGroupers(Arrays.asList(queryGroupBy1));
 
         QueryAggregator aggregator1 = new QueryAggregator();
-        aggregator1.setAggregatorUnit(QueryAggregatorUnit.AVG);
+        aggregator1.setName(QueryAggregatorUnit.AVG.getDescription());
         queryMetric1.setAggregators(Arrays.asList(aggregator1));
 
         Map<String, Set<String>> queryMetricTags1 = new HashMap<>();
@@ -149,7 +149,7 @@ public class TsMetricResultQueryServiceTest {
         queryMetric2.setGroupers(Arrays.asList(queryGroupBy1));
 
         QueryAggregator aggregator2 = new QueryAggregator();
-        aggregator2.setAggregatorUnit(QueryAggregatorUnit.MAX);
+        aggregator2.setName(QueryAggregatorUnit.MAX.getDescription());
         queryMetric2.setAggregators(Arrays.asList(aggregator2));
 
         Map<String, Set<String>> queryMetricTags2 = new HashMap<>();

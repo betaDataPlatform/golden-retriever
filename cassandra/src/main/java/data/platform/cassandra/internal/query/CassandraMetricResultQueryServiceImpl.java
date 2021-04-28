@@ -184,7 +184,7 @@ public class CassandraMetricResultQueryServiceImpl implements MetricResultQueryS
             DataPoint dataPoint = new DataPoint();
             LocalDateTime localDateTime = LocalDateTime.of(eos.get(0).getDataPointKey().getPartition(),eos.get(0).getDataPointKey().getOffset());
             Date eventTime = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-            dataPoint.setTimestamp(eventTime);
+            dataPoint.setTimestamp(eventTime.getTime());
             dataPoint.setValue(value);
             return Arrays.asList(dataPoint);
         }

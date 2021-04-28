@@ -33,6 +33,7 @@ public class MetricController {
 
     @PostMapping(value = "/queryTagValueOfMetric", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Mono<List<String>> queryTagValueOfMetric(@RequestBody Map<String, String> metricMap) {
-        return metricTagQueryService.filterTagValueOfMetric(metricMap.get("metric"),metricMap.get("tagKey")).collectList();
+        return metricTagQueryService.filterTagValueOfMetric(metricMap.get("metric"),
+                metricMap.get("tagKey"), metricMap.get("tagValue")).collectList();
     }
 }

@@ -3,8 +3,7 @@
         <div nz-row style="margin-bottom: 20px;">
             <div nz-col nzSpan="3">时间范围：</div>
             <div nz-col nzSpan="15">
-                <nz-range-picker [nzRanges]="ranges" nzShowTime nzFormat="yyyy/MM/dd HH:mm:ss" ngModel
-                    (nzOnOk)="onDateOk($event)"></nz-range-picker>
+                <nz-range-picker [(ngModel)]="queryDate" [nzRanges]="ranges" nzShowTime nzFormat="yyyy/MM/dd HH:mm:ss"></nz-range-picker>
             </div>
         </div>
         <div nz-row style="margin-bottom: 20px;">
@@ -50,8 +49,8 @@
                     <nz-option *ngFor="let tagValue of tagValues" [nzLabel]="tagValue" [nzValue]="tagValue">
                     </nz-option>
                 </nz-select>
-            </div>   
-            <i nz-icon nzType="minus-circle-o" class="dynamic-delete-button" (click)="deleteTag(i,$event)"></i>
+                <i nz-icon nzType="minus-circle-o" class="dynamic-delete-button" (click)="deleteTag(i,$event)"></i>
+            </div>               
         </div>
         <div nz-row style style="margin-bottom: 20px;">
             <div nz-col nzSpan="3"></div>

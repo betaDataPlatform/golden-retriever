@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 @ConditionalOnBean(name = "timeScaleConfig")
@@ -73,7 +74,8 @@ public class TsDataPointRepository {
                     dataPointEO.setMetric(metric);
                     dataPointEO.setTagJson(parseJson(tagJson));
                     return dataPointEO;
-                });
+                })
+                .filter(dataPointEO -> Objects.nonNull(dataPointEO.getValue()));
     }
 
     public Flux<DataPointEO> functionDataPoint(QueryAggregatorUnit aggregatorUnit, String metric, String tagJson, Date beginTime, Date endTime) {
@@ -94,7 +96,8 @@ public class TsDataPointRepository {
                     dataPointEO.setTagId(tagId);
                     dataPointEO.setTagJson(parseJson(tagJson));
                     return dataPointEO;
-                });
+                })
+                .filter(dataPointEO -> Objects.nonNull(dataPointEO.getValue()));
     }
 
     private Map<String, String> parseJson(String json) {

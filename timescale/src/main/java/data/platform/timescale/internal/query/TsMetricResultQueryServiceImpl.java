@@ -143,7 +143,7 @@ public class TsMetricResultQueryServiceImpl implements MetricResultQueryService 
                 value = valueStream.sum();
             }
             DataPoint dataPoint = new DataPoint();
-            dataPoint.setTimestamp(eos.get(0).getEventTime());
+            dataPoint.setTimestamp(eos.get(0).getEventTime().getTime());
             dataPoint.setValue(value);
             return Arrays.asList(dataPoint);
         }
