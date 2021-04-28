@@ -126,6 +126,16 @@ public class TsCacheService {
         }
     }
 
+    public Set<String> getAllMetrics() {
+        return tsMetricCache.asMap().keySet();
+    }
+
+    public List<MetricTag> getAllMetricTags() {
+        return tsMetricTagCache.asMap().values().stream().
+                flatMap(metricTags -> metricTags.stream())
+                .collect(Collectors.toList());
+    }
+
     public Collection<String> matchingTag(String metric, Map<String, String> tags) {
         List<Set<String>> tagSets = new ArrayList<>();
         tags.forEach((tagName, tagValue) -> {
@@ -144,7 +154,6 @@ public class TsCacheService {
         return intersection;
     }
 
-    // update.................
     private Mono<MetricTag> createMetricTag(MetricTag metricTag) {
         return Mono.defer(() -> {
                     Integer metricId = tsMetricCache.getIfPresent(metricTag.getMetric());

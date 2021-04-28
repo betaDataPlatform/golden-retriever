@@ -18,6 +18,21 @@ public class CassandraMetricTagQueryServiceImpl implements MetricTagQueryService
     final CassandraCacheService cassandraCacheService;
 
     @Override
+    public Flux<String> filterMetric(String metric) {
+        return null;
+    }
+
+    @Override
+    public Flux<String> filterTagKeyOfMetric(String metric) {
+        return null;
+    }
+
+    @Override
+    public Flux<String> filterTagValueOfMetric(String metric, String tagKey) {
+        return null;
+    }
+
+    @Override
     public Flux<MetricTag> findMetricTag(String metric, String tagName, String tagValue) {
         return Flux.fromIterable(cassandraCacheService.findMetricTag(metric, tagName, tagValue));
     }

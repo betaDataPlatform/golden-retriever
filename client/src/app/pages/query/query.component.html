@@ -12,7 +12,7 @@
             <div nz-col nzSpan="15">
                 <nz-select style="width: 200px;" nzShowSearch nzServerSearch nzPlaceHolder="指标" [nzShowArrow]="false"
                     [(ngModel)]="selectedMetric" [nzFilterOption]="nzFilterOption"
-                    (nzOnSearch)="onMetricSerach($event)">
+                    (nzOnSearch)="onMetricSerach($event)" (ngModelChange)="queryTagKeyOfMetric()">
                     <nz-option *ngFor="let metric of metrics" [nzLabel]="metric" [nzValue]="metric">
                     </nz-option>
                 </nz-select>
@@ -46,7 +46,7 @@
             <div nz-col nzSpan="12">
                 <nz-select style="width: 400px;" nzShowSearch nzServerSearch nzPlaceHolder="" [nzShowArrow]="false"
                     [(ngModel)]="tags[i].tagValue" [nzFilterOption]="nzFilterOption"
-                    (nzOnSearch)="onTagValueSerach($event)">
+                    (nzOnSearch)="queryTagValueOfMetric(i,$event)">
                     <nz-option *ngFor="let tagValue of tagValues" [nzLabel]="tagValue" [nzValue]="tagValue">
                     </nz-option>
                 </nz-select>
@@ -63,8 +63,7 @@
           </div>
         <div nz-row>
             <div nz-col nzSpan="12">
-                <button nz-button nzBlock="true" nzType="primary" nzBlock (click)='onSearch()'><i nz-icon
-                        type="search"></i>查询</button>
+                <button nz-button nzBlock="true" nzType="primary" nzBlock (click)='onSearch()'>查询</button>
             </div>
         </div>
     </div>
@@ -72,7 +71,7 @@
 <nz-divider nzText=""></nz-divider>
 <div nz-row>
     <div nz-col nzSpan="24">
-        <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
+        <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions" [(update)]="updateFlag"
             style="width: 100%; height: 400px; display: block;"></highcharts-chart>
     </div>
 </div>
