@@ -4,6 +4,7 @@ import data.platform.monitor.domain.DataSetMeterRegistry;
 import data.platform.monitor.domain.DataSetRegistryConfig;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
+import io.micrometer.core.instrument.binder.system.ProcessorMetrics;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -42,7 +43,7 @@ public class DataSetMicroMeterConfig {
         dataSetMeterRegistry.config().commonTags("application", "betasoft.dc.dataset");
 
         new JvmMemoryMetrics().bindTo(dataSetMeterRegistry);
-        //new ProcessorMetrics().bindTo(dataSetMeterRegistry);
+        new ProcessorMetrics().bindTo(dataSetMeterRegistry);
         //new JvmThreadMetrics().bindTo(btdpMeterRegistry);
         //new CassandraMetrics("127.0.0.1", 7199).bindTo(btdpMeterRegistry);
 

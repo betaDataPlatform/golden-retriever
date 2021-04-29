@@ -1,5 +1,7 @@
 package data.platform.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import data.platform.common.domain.MetricValue;
 import data.platform.common.event.MetricValueEvent;
 import data.platform.common.query.QueryBuilder;
@@ -54,6 +56,16 @@ public class ApiController {
     public Mono<ResponseEntity<QueryResults>> query(@RequestBody QueryBuilder queryBuilder) {
         return metricResultQueryService.query(queryBuilder)
                 .elapsed()
+                .doOnNext(tuple2 -> {
+                    if (tuple2.getT1() > 0) {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        try {
+                            log.info("query time: " + tuple2.getT1() + "," + objectMapper.writeValueAsString(queryBuilder));
+                        } catch (JsonProcessingException ex) {
+                            log.error("", ex);
+                        }
+                    }
+                })
                 .map(tuple2 -> ResponseEntity.ok()
                         .header("executetime", tuple2.getT1().toString())
                         .body(tuple2.getT2()));

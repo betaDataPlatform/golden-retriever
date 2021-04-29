@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+application/logs/dataset.log
+*.log

@@ -4,5 +4,11 @@
         "secure": false,
         "changeOrigin": true,
         "logLevel": "debug"
+    },
+    "/monitor": {
+        "target": "http://localhost:30510",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
     }
 }

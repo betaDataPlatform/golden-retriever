@@ -2,6 +2,7 @@ package data.platform.monitor.domain;
 
 import data.platform.common.domain.MetricValue;
 import data.platform.common.event.MetricValueEvent;
+import data.platform.common.event.MonitorEvent;
 import io.micrometer.core.instrument.Timer;
 import io.micrometer.core.instrument.*;
 import io.micrometer.core.instrument.config.NamingConvention;
@@ -70,8 +71,8 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
         monitorMetrics.put("cassandra.cpu.usage", new HashMap<>());
         metricsConvert.put("cassandra.cpu.usage", "decimalMulti100");
 
-        monitorMetrics.put("dc.dataSet.metricValue.count.save", new HashMap<>());
-        monitorMetrics.put("dc.dataSet.metricValue.count.drop", new HashMap<>());
+        monitorMetrics.put("dp.metricValue.count.save", new HashMap<>());
+        monitorMetrics.put("dp.metricValue.count.drop", new HashMap<>());
     }
 
     public DataSetMeterRegistry(DataSetRegistryConfig config, Clock clock, ApplicationEventPublisher applicationEventPublisher) {
@@ -79,7 +80,7 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
         this.config = config;
         this.applicationEventPublisher = applicationEventPublisher;
         config().namingConvention(NamingConvention.dot);
-        start(new NamedThreadFactory("data-set-metrics-publisher"));
+        start(new NamedThreadFactory("golden-retriever-metrics-publisher"));
     }
 
     @Override
@@ -132,6 +133,10 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
                     })
                     .peek(metricValue -> applicationEventPublisher.publishEvent(new MetricValueEvent(metricValue)))
                     .collect(Collectors.toList());
+
+            // 发送监控指标值，前端展现
+            MonitorEvent monitorEvent = new MonitorEvent(metricValues);
+            applicationEventPublisher.publishEvent(monitorEvent);
         }
     }
 
