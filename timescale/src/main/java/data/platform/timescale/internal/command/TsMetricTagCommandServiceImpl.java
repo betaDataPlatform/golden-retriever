@@ -9,9 +9,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
+import java.util.List;
 
 @ConditionalOnBean(name = "timeScaleConfig")
 @Service
@@ -27,13 +28,16 @@ public class TsMetricTagCommandServiceImpl implements MetricTagCommandService {
 
     @Override
     public Mono<Long> save(MetricValue metricValue) {
-        // convert to: metric:tagKey:tagValue:tag
-        return getMetricTag(metricValue)
-                .flatMap(metricTag -> tsCacheService.metricPutCache(metricTag.getMetric())
-                                .then(tsCacheService.tagPutCache(metricTag.getTag()))
-                                .then(tsCacheService.metricTagPutCache(metricTag))
-                )
-                .count();
+        return null;
     }
 
+    @Override
+    public Mono<Integer> saveAll(List<MetricValue> metricValues) {
+        return Flux.fromIterable(metricValues)
+                .flatMap(metricValue -> getMetricTag(metricValue))
+                .collectList()
+                .flatMap(metricTags -> tsCacheService.metricPutCache(metricTags)
+                        .then(tsCacheService.tagPutCache(metricTags))
+                        .then(tsCacheService.metricTagPutCache(metricTags)));
+    }
 }

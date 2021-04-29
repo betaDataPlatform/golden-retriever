@@ -12,6 +12,8 @@ public interface MetricTagCommandService {
 
     Mono<Long> save(MetricValue metricValue);
 
+    Mono<Integer> saveAll(List<MetricValue> metricValues);
+
     default Flux<MetricTag> getMetricTag(MetricValue metricValue) {
         return Mono.just(metricValue)
                 .map(mv -> getMetricTags(mv))

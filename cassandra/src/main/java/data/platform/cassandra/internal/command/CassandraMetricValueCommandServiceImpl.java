@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -55,6 +56,11 @@ public class CassandraMetricValueCommandServiceImpl implements MetricValueComman
                     }
                 })
                 .map(eo -> 1L);
+    }
+
+    @Override
+    public Mono<Integer> saveAll(List<MetricValue> metricValueList) {
+        return null;
     }
 
     private Optional<DataPointEO> metricValueToDataPoint(MetricValue metricValue) {

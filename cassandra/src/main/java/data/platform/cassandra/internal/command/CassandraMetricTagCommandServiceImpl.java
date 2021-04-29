@@ -8,7 +8,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @ConditionalOnBean(name = "cassandraConfig")
 @Service
@@ -25,5 +28,10 @@ public class CassandraMetricTagCommandServiceImpl implements MetricTagCommandSer
         return getMetricTag(metricValue)
                 .flatMap(metricTag -> cassandraCacheService.metricTagPutCache(metricTag))
                 .count();
+    }
+
+    @Override
+    public Mono<Integer> saveAll(List<MetricValue> metricValues) {
+        return null;
     }
 }

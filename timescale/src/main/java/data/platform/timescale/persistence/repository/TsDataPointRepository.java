@@ -6,6 +6,7 @@ import data.platform.timescale.internal.cache.TsCacheService;
 import data.platform.timescale.persistence.mapping.DataPointEO;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
+import io.r2dbc.spi.Statement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -14,10 +15,7 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiFunction;
 
 @ConditionalOnBean(name = "timeScaleConfig")
@@ -32,7 +30,7 @@ public class TsDataPointRepository {
 
     private final static ObjectMapper objectMapper = new ObjectMapper();
 
-    private final static String CREATE_SQL = "INSERT INTO data_point(event_time, metric_id, tag_id, value) values(:eventTime, :metricId, :tagId, :value)";
+    private final static String CREATE_SQL = "INSERT INTO data_point(event_time, metric_id, tag_id, value) values($1, $2, $3, $4)";
 
     private final static String QUERY_SQL = "SELECT * FROM data_point WHERE metric_id = :metricId AND tag_id = :tagId AND event_time >= :beginTime AND event_time <= :endTime ORDER BY event_time asc";
 
@@ -49,15 +47,17 @@ public class TsDataPointRepository {
             .value(row.get("value", Double.class))
             .build();
 
-    public Mono<DataPointEO> save(DataPointEO eo) {
-        return databaseClient.sql(CREATE_SQL)
-                .bind("eventTime", eo.getEventTime())
-                .bind("metricId", eo.getMetricId())
-                .bind("tagId", eo.getTagId())
-                .bind("value", eo.getValue())
-                .fetch()
-                .first()
-                .thenReturn(eo);
+    public Flux<DataPointEO> saveAll(List<DataPointEO> eos) {
+        return databaseClient.inConnectionMany(connection -> {
+            Statement statement = connection.createStatement(CREATE_SQL);
+            eos.forEach(eo -> statement.bind(0, eo.getEventTime())
+                    .bind(1, eo.getMetricId())
+                    .bind(2, eo.getTagId())
+                    .bind(3, eo.getValue()).add());
+
+            return Flux.from(statement.execute())
+                    .flatMap(result -> result.map(MAPPING_FUNCTION));
+        });
     }
 
     public Flux<DataPointEO> queryDataPoint(String metric, String tagJson, Date beginTime, Date endTime) {

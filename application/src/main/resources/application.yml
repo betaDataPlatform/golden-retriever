@@ -7,3 +7,9 @@ spring:
     exclude:
       - org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration
       - org.springframework.boot.autoconfigure.r2dbc.R2dbcAutoConfiguration
+
+metric:
+  save:
+    buffer:
+      maxSize: 3
+      maxTime: 500

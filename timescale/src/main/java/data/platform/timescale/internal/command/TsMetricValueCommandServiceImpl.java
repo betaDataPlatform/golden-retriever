@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.ZoneId;
-import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @ConditionalOnBean(name = "timeScaleConfig")
@@ -31,16 +31,21 @@ public class TsMetricValueCommandServiceImpl implements MetricValueCommandServic
 
     @Override
     public Mono<Long> save(MetricValue metricValue) {
-        return Mono.just(metricValue)
-                // 数据加入缓存
-                .flatMap(mv -> metricTagCommandService.save(mv))
-                // 转换成dataPoint
-                .map(count -> metricValueToDataPoint(metricValue))
+        return null;
+    }
+
+    @Override
+    public Mono<Integer> saveAll(List<MetricValue> metricValueList) {
+        return metricTagCommandService.saveAll(metricValueList)
+                .map(count -> metricValueList)
+                .flatMapMany(Flux::fromIterable)
+                .map(metricValue -> metricValueToDataPoint(metricValue))
                 .filter(dataPointOptional -> dataPointOptional.isPresent())
                 .map(dataPointOptional -> dataPointOptional.get())
-                // 插入数据库
-                .flatMap(dataPoint -> dataPointRepository.save(dataPoint))
-                .map(eo -> 1L);
+                .collectList()
+                .flatMap(dataPointEOS -> dataPointRepository.saveAll(dataPointEOS).collectList())
+                .map(List::size);
+
     }
 
     private Optional<DataPointEO> metricValueToDataPoint(MetricValue metricValue) {

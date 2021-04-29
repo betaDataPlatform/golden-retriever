@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
@@ -62,41 +63,49 @@ public class TsCacheService {
         log.info("metric tag cache size is: [{}].", tsMetricTagCache.asMap().size());
     }
 
-    public Mono<Integer> metricPutCache(String metric) {
-        Integer id = tsMetricCache.getIfPresent(metric);
-        if (Objects.isNull(id)) {
-            return metricRepository.save(metric)
-                    .onErrorResume(e -> metricRepository.findByName(metric)
-                            .map(eo -> eo.getId()))
-                    .doOnNext(metricId -> tsMetricCache.put(metric, metricId));
-        } else {
-            return Mono.just(id);
-        }
+    public Mono<Integer> metricPutCache(List<MetricTag> metricTags) {
+        Set<String> metrics = metricTags.stream().map(MetricTag::getMetric).collect(Collectors.toSet());
+        return Flux.fromIterable(metrics)
+                .filter(metric -> Objects.isNull(tsMetricCache.getIfPresent(metric)))
+                .flatMap(metric -> metricRepository.save(metric)
+                        .onErrorResume(e -> metricRepository.findByName(metric)
+                                .map(eo -> eo.getId()))
+                        .doOnNext(metricId -> tsMetricCache.put(metric, metricId)))
+                .collectList()
+                .map(List::size);
     }
 
-    public Mono<Integer> tagPutCache(String tag) {
-        Integer id = tsTagCache.getIfPresent(tag);
-        if (Objects.isNull(id)) {
-            return tagRepository.save(tag)
-                    .onErrorResume(e -> tagRepository.findByTag(tag)
-                            .map(eo -> eo.getId()))
-                    .doOnNext(tagId -> tsTagCache.put(tag, tagId));
-        } else {
-            return Mono.just(id);
-        }
+    public Mono<Integer> tagPutCache(List<MetricTag> metricTags) {
+        Set<String> tags = metricTags.stream().map(MetricTag::getTag).collect(Collectors.toSet());
+        return Flux.fromIterable(tags)
+                .filter(tag -> Objects.isNull(tsTagCache.getIfPresent(tag)))
+                .flatMap(tag -> tagRepository.save(tag)
+                        .onErrorResume(e -> tagRepository.findByTag(tag)
+                                .map(eo -> eo.getId()))
+                        .doOnNext(tagId -> tsTagCache.put(tag, tagId)))
+                .collectList()
+                .map(List::size);
     }
 
-    public Mono<MetricTag> metricTagPutCache(MetricTag metricTag) {
-        String key = metricTag.cacheKey();
-        Set<MetricTag> metricTags = tsMetricTagCache.get(key, k -> new HashSet<>());
-        Optional<MetricTag> metricTagOptional = metricTags.stream()
-                .filter(mt -> mt.equals(metricTag))
-                .findAny();
-        if (!metricTagOptional.isPresent()) {
-            return createMetricTag(metricTag);
-        } else {
-            return Mono.just(metricTagOptional.get());
-        }
+    public Mono<Integer> metricTagPutCache(List<MetricTag> metricTags) {
+        return Flux.fromIterable(metricTags)
+                .map(metricTag -> {
+                    String key = metricTag.cacheKey();
+                    Set<MetricTag> mts = tsMetricTagCache.get(key, k -> new HashSet<>());
+                    Optional<MetricTag> metricTagOptional = mts.stream()
+                            .filter(mt -> mt.equals(metricTag))
+                            .findAny();
+                    if (!metricTagOptional.isPresent()) {
+                        metricTagOptional = Optional.of(metricTag);
+                    } else {
+                        metricTagOptional = Optional.empty();
+                    }
+                    return metricTagOptional;
+                })
+                .filter(metricTagOptional -> metricTagOptional.isPresent())
+                .map(metricTagOptional -> metricTagOptional.get())
+                .collectList()
+                .flatMap(mts -> createMetricTag(mts));
     }
 
     public Optional<Integer> getMetricId(String metric) {
@@ -114,15 +123,6 @@ public class TsCacheService {
             return Optional.empty();
         } else {
             return Optional.of(id);
-        }
-    }
-
-    public Boolean metricExist(String metric) {
-        Integer id = tsMetricCache.getIfPresent(metric);
-        if (Objects.isNull(id)) {
-            return false;
-        } else {
-            return true;
         }
     }
 
@@ -154,8 +154,9 @@ public class TsCacheService {
         return intersection;
     }
 
-    private Mono<MetricTag> createMetricTag(MetricTag metricTag) {
-        return Mono.defer(() -> {
+    private Mono<Integer> createMetricTag(List<MetricTag> metricTags) {
+        return Flux.fromIterable(metricTags)
+                .map(metricTag -> {
                     Integer metricId = tsMetricCache.getIfPresent(metricTag.getMetric());
                     Integer tagId = tsTagCache.getIfPresent(metricTag.getTag());
                     MetricTagEO eo = new MetricTagEO();
@@ -165,11 +166,15 @@ public class TsCacheService {
                     eo.setTagValue(metricTag.getTagValue());
                     eo.setTag(metricTag.getTag());
                     eo.setTagId(tagId);
-                    return metricTagRepository.save(eo);
-                }
-        )
-                .onErrorResume(e -> metricTagRepository.findByMetricAndTag(metricTag.getMetric(), metricTag.getTagName(), metricTag.getTagValue(), tsTagCache.getIfPresent(metricTag.getTag())))
-                .map(eo -> eo.toMetricTag())
-                .doOnNext(e -> tsMetricTagCache.getIfPresent(metricTag.cacheKey()).add(e));
+                    return eo;
+                })
+                .flatMap(eo -> metricTagRepository.save(eo)
+                        .onErrorResume(e -> metricTagRepository.findByMetricAndTag(eo.getMetric(), eo.getTagName(),
+                                eo.getTagValue(), tsTagCache.getIfPresent(eo.getTag())))
+                        .map(eo1 -> eo1.toMetricTag())
+                        .doOnNext(metricTag -> tsMetricTagCache.getIfPresent(metricTag.cacheKey()).add(metricTag)))
+                .collectList()
+                .map(List::size);
+
     }
 }

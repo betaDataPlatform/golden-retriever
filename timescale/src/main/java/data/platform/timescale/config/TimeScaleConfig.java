@@ -27,6 +27,8 @@ public class TimeScaleConfig {
 
     private String password;
 
+    private int initialSize;
+
     private int maxSize;
 
     @PostConstruct
