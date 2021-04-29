@@ -34,7 +34,7 @@ public class MetricValueEventTest {
 
         int valueSize = 1;
         for(Map<String, String> tag : tagList) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 10; i++) {
                 MetricValue metricValue = new MetricValue();
                 metricValue.setMetric("CPU_LOAD");
                 metricValue.setTag(tag);

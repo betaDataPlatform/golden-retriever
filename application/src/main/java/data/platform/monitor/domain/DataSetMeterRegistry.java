@@ -70,8 +70,8 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
         monitorMetrics.put("cassandra.cpu.usage", new HashMap<>());
         metricsConvert.put("cassandra.cpu.usage", "decimalMulti100");
 
-        monitorMetrics.put("dc.dataSet.metricValue.count.save", new HashMap<>());
-        monitorMetrics.put("dc.dataSet.metricValue.count.drop", new HashMap<>());
+        monitorMetrics.put("dp.metricValue.count.save", new HashMap<>());
+        monitorMetrics.put("dp.metricValue.count.drop", new HashMap<>());
     }
 
     public DataSetMeterRegistry(DataSetRegistryConfig config, Clock clock, ApplicationEventPublisher applicationEventPublisher) {
@@ -79,7 +79,7 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
         this.config = config;
         this.applicationEventPublisher = applicationEventPublisher;
         config().namingConvention(NamingConvention.dot);
-        start(new NamedThreadFactory("data-set-metrics-publisher"));
+        start(new NamedThreadFactory("golden-retriever-metrics-publisher"));
     }
 
     @Override

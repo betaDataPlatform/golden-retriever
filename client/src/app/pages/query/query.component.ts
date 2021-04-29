@@ -41,21 +41,29 @@ export class QueryComponent implements OnInit {
     chart: {
       type: 'spline',
     },
+    title: {
+      "text": ''
+    },
+    xAxis: {
+      type: 'datetime',
+      dateTimeLabelFormats: {
+        day: '%m-%d',
+      },
+      labels: {
+        overflow: 'justify',
+      },
+    },
     tooltip: {
       headerFormat: '<b>{series.name}</b><br>',
       pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}: {point.y:.2f}',
     },
     series: [
-      {
-        type: 'line',
-        data: [],
-      },
-    ],
+    ]
   };
 
   queryBuilder: QueryBuilder = new QueryBuilder();
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   ngOnInit() {
     this.beginDate.setHours(0, 0, 0, 0);
@@ -166,6 +174,8 @@ export class QueryComponent implements OnInit {
         let series = [];
         let config: any = { ...response.body };
         let results = config['queries'][0].results;
+        let sampleSize = config['queries'][0].sample_size;
+
         for (let i = 0; i < results.length; i++) {
           let serie: any = {};
 
@@ -185,20 +195,11 @@ export class QueryComponent implements OnInit {
             type: 'spline',
           },
           title: {
-            text: '执行时间：' + response.headers.get('executetime') + ' ms',
+            text: '执行时间：' + response.headers.get('executetime') + ' ms, 数据点: ' + sampleSize,
           },
           time: {
             useUTC: false,
           },
-          xAxis: {
-            type: 'datetime',
-            dateTimeLabelFormats: {
-              day: '%m-%d',
-            },
-            labels: {
-              overflow: 'justify',
-            },
-          },          
           series: series,
         };
 
