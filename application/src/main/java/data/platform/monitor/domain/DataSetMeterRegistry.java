@@ -2,6 +2,7 @@ package data.platform.monitor.domain;
 
 import data.platform.common.domain.MetricValue;
 import data.platform.common.event.MetricValueEvent;
+import data.platform.common.event.MonitorEvent;
 import io.micrometer.core.instrument.Timer;
 import io.micrometer.core.instrument.*;
 import io.micrometer.core.instrument.config.NamingConvention;
@@ -132,6 +133,10 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
                     })
                     .peek(metricValue -> applicationEventPublisher.publishEvent(new MetricValueEvent(metricValue)))
                     .collect(Collectors.toList());
+
+            // 发送监控指标值，前端展现
+            MonitorEvent monitorEvent = new MonitorEvent(metricValues);
+            applicationEventPublisher.publishEvent(monitorEvent);
         }
     }
 
