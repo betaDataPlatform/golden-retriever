@@ -24,14 +24,10 @@ public class CassandraMetricTagCommandServiceImpl implements MetricTagCommandSer
     final CassandraCacheService cassandraCacheService;
 
     @Override
-    public Mono<Long> save(MetricValue metricValue) {
-        return getMetricTag(metricValue)
-                .flatMap(metricTag -> cassandraCacheService.metricTagPutCache(metricTag))
-                .count();
-    }
-
-    @Override
     public Mono<Integer> saveAll(List<MetricValue> metricValues) {
-        return null;
+        return Flux.fromIterable(metricValues)
+                .flatMap(metricValue -> getMetricTag(metricValue))
+                .collectList()
+                .flatMap(metricTags -> cassandraCacheService.metricTagPutCache(metricTags));
     }
 }

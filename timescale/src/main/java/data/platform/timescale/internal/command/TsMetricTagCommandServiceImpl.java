@@ -27,11 +27,6 @@ public class TsMetricTagCommandServiceImpl implements MetricTagCommandService {
     final TsCacheService tsCacheService;
 
     @Override
-    public Mono<Long> save(MetricValue metricValue) {
-        return null;
-    }
-
-    @Override
     public Mono<Integer> saveAll(List<MetricValue> metricValues) {
         return Flux.fromIterable(metricValues)
                 .flatMap(metricValue -> getMetricTag(metricValue))

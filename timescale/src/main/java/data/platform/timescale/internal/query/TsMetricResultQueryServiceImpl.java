@@ -44,13 +44,21 @@ public class TsMetricResultQueryServiceImpl implements MetricResultQueryService 
                 .flatMap(queryMetric -> {
                     // 指标名称
                     String metric = queryMetric.getMetric();
-                    // 获取需要查询的指标以及对应的标签
-                    List<Map<String, String>> queryTags = getMetricTags(queryMetric);
+
                     // 要查询的标签
                     Set<String> tagJsons = new HashSet<>();
-                    for (Map<String, String> tagMap : queryTags) {
-                        tagJsons.addAll(tsCacheService.matchingTag(metric, tagMap));
+
+                    if (queryMetric.getTags().size() == 0) {
+                        // 只通过指标查询
+                        tagJsons.addAll(tsCacheService.matchingTagByMetric(metric));
+                    } else {
+                        // 获取需要查询的指标以及对应的标签
+                        List<Map<String, String>> queryTags = getMetricTags(queryMetric);
+                        for (Map<String, String> tagMap : queryTags) {
+                            tagJsons.addAll(tsCacheService.matchingTag(metric, tagMap));
+                        }
                     }
+
                     // 标签分组
                     List<String> groupBys = new ArrayList<>();
                     if (Objects.nonNull(queryMetric.getGroupers())) {

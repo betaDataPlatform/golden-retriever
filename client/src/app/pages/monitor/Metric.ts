@@ -6,5 +6,4 @@ export class Metric {
 
     datapoints: any = [];
 
-    ttl: number = 0;
 }

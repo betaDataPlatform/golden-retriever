@@ -1,4 +1,4 @@
-package data.platform.timescale;
+package data.platform.cassandra;
 
 import data.platform.common.domain.MetricValue;
 import data.platform.common.event.MetricValueEvent;
@@ -10,11 +10,10 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootTest
-@ActiveProfiles("timescale")
-public class MetricValueEventTest {
+@ActiveProfiles("cassandra")
+public class CassandraMetricValueEventTest {
 
 
     @Autowired
@@ -24,10 +23,10 @@ public class MetricValueEventTest {
     void save() throws InterruptedException {
         List<Map<String, String>> tagList = new ArrayList<>();
         tagList.add(createTag("30.0.0.1","sh","r01", "Windows"));
-        //tagList.add(createTag("30.0.0.2","sh","r01"));
-        //tagList.add(createTag("30.0.0.3","sh","r02"));
-        //tagList.add(createTag("10.0.0.1","bj","r01"));
-        //tagList.add(createTag("10.0.0.2","bj","r02"));
+        //tagList.add(createTag("30.0.0.2","sh","r01", null));
+        //tagList.add(createTag("30.0.0.3","sh","r02",null));
+        //tagList.add(createTag("10.0.0.1","bj","r01",null));
+        //tagList.add(createTag("10.0.0.2","bj","r02",null));
 
         int valueSize = 1;
         for(Map<String, String> tag : tagList) {

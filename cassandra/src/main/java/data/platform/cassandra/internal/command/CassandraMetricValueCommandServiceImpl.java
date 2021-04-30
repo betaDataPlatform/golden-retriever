@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ConditionalOnBean(name = "cassandraConfig")
 @Service
@@ -36,31 +37,20 @@ public class CassandraMetricValueCommandServiceImpl implements MetricValueComman
     private DateTimeFormatter dayFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
-    public Mono<Long> save(MetricValue metricValue) {
-
-        return Mono.just(metricValue)
-                // 数据加入缓存
-                .flatMap(mv -> metricTagCommandService.save(mv))
-                // 转换成dataPoint
-                .map(count -> metricValueToDataPoint(metricValue))
-                .filter(dataPointOptional -> dataPointOptional.isPresent())
-                .map(dataPointOptional -> dataPointOptional.get())
-                // 插入数据库
-                .filter(dataPoint -> Objects.nonNull(dataPoint.getTtl()))
-                .flatMap(dataPoint -> {
-                    log.info(dataPoint.toString());
-                    if (Objects.nonNull(dataPoint.getTtl())) {
-                        return cassandraDataPointRepository.insert(dataPoint, dataPoint.getTtl());
-                    } else {
-                        return cassandraDataPointRepository.insert(dataPoint, 0);
-                    }
-                })
-                .map(eo -> 1L);
+    public Mono<Integer> saveAll(List<MetricValue> metricValueList) {
+        return metricTagCommandService.saveAll(metricValueList)
+                .then(cassandraDataPointRepository
+                        .insertAll(createDataPointEOs(metricValueList), 0)
+                        .count()
+                        .map(count -> count.intValue()));
     }
 
-    @Override
-    public Mono<Integer> saveAll(List<MetricValue> metricValueList) {
-        return null;
+    private List<DataPointEO> createDataPointEOs(List<MetricValue> metricValueList) {
+        return metricValueList.stream()
+                .map(metricValue -> metricValueToDataPoint(metricValue))
+                .filter(dataPointOptional -> dataPointOptional.isPresent())
+                .map(dataPointOptional -> dataPointOptional.get())
+                .collect(Collectors.toList());
     }
 
     private Optional<DataPointEO> metricValueToDataPoint(MetricValue metricValue) {
@@ -75,7 +65,6 @@ public class CassandraMetricValueCommandServiceImpl implements MetricValueComman
             DataPointEO dataPoint = new DataPointEO();
             dataPoint.setDataPointKey(dataPointKey);
             dataPoint.setValue(metricValue.getValue());
-            dataPoint.setTtl(metricValue.getTtl());
 
             return Optional.of(dataPoint);
         } catch (Exception ex) {

@@ -1,8 +1,8 @@
 cassandra:
   enable: true
   keyspace-name: dc
-  local-datacenter: datacenter1
-  contact-points: 30.0.11.162
+  local-datacenter: dc1
+  contact-points: 127.0.0.1
   port: 9042
   durable-writes: false
   defaultTimeToLive: 31536000 # 365 days,14 days a file, seconds

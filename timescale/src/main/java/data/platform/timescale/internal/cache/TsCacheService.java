@@ -56,11 +56,13 @@ public class TsCacheService {
                     metricTags.add(metricTag);
                 })
                 .collectList()
-                .block();
-        log.info("timescale metric tag cache load finish.......");
-        log.info("metric cache size is: [{}].", tsMetricCache.asMap().size());
-        log.info("tag cache size is: [{}].", tsTagCache.asMap().size());
-        log.info("metric tag cache size is: [{}].", tsMetricTagCache.asMap().size());
+                .subscribe(metricTags -> {
+                    log.info("timescale metric tag cache load finish.......");
+                    log.info("metric cache size is: [{}].", tsMetricCache.asMap().size());
+                    log.info("tag cache size is: [{}].", tsTagCache.asMap().size());
+                    log.info("metric tag cache size is: [{}].", tsMetricTagCache.asMap().size());
+                });
+
     }
 
     public Mono<Integer> metricPutCache(List<MetricTag> metricTags) {
@@ -152,6 +154,14 @@ public class TsCacheService {
             intersection = Sets.intersection(intersection, scan);
         }
         return intersection;
+    }
+
+    public Collection<String> matchingTagByMetric(String metric) {
+        List<MetricTag> metricTags = getAllMetricTags();
+        return metricTags.stream()
+                .filter(metricTag -> metricTag.getMetric().equals(metric))
+                .map(metricTag -> metricTag.getTag())
+                .collect(Collectors.toSet());
     }
 
     private Mono<Integer> createMetricTag(List<MetricTag> metricTags) {

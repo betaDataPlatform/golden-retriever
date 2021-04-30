@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
@@ -39,10 +40,11 @@ public class CassandraCacheService {
                 .map(MetricTagEO::toMetricTag)
                 .doOnNext(metricTag -> add(metricTag))
                 .collectList()
-                .block();
-        log.info("cassandra metric tag cache load finish.......");
-        log.info("metric cache size is: [{}].", cassandraMetricCache.asMap().size());
-        log.info("metric tag cache size is: [{}].", cassandraMetricTagCache.asMap().size());
+                .subscribe(metricTags -> {
+                    log.info("cassandra metric tag cache load finish.......");
+                    log.info("metric cache size is: [{}].", cassandraMetricCache.asMap().size());
+                    log.info("metric tag cache size is: [{}].", cassandraMetricTagCache.asMap().size());
+                });
     }
 
     public void add(MetricTag metricTag) {
@@ -59,30 +61,34 @@ public class CassandraCacheService {
         }
     }
 
-    public Mono<MetricTag> metricTagPutCache(MetricTag metricTag) {
-        String key = metricTag.cacheKey();
-        Set<MetricTag> metricTags = cassandraMetricTagCache.get(key, k -> new HashSet<>());
-        Optional<MetricTag> metricTagOptional = metricTags.stream()
-                .filter(mt -> mt.equals(metricTag))
-                .findAny();
-        if (!metricTagOptional.isPresent()) {
-            return cassandraMetricTagRepository.save(MetricTagEO.toMetricTagEO(metricTag))
-                    .map(eo -> eo.toMetricTag())
-                    .onErrorReturn(metricTag)
-                    .doOnNext(eo -> {
-                        addMetric(metricTag.getMetric());
-                        metricTags.add(metricTag);
-                    });
-        } else {
-            return Mono.just(metricTagOptional.get());
-        }
+    public Mono<Integer> metricTagPutCache(List<MetricTag> metricTags) {
+        return Flux.fromIterable(metricTags.stream().collect(Collectors.toSet()))
+                .map(metricTag -> {
+                    String key = metricTag.cacheKey();
+                    Set<MetricTag> mts = cassandraMetricTagCache.get(key, k -> new HashSet<>());
+                    Optional<MetricTag> metricTagOptional = mts.stream()
+                            .filter(mt -> mt.equals(metricTag))
+                            .findAny();
+                    if (!metricTagOptional.isPresent()) {
+                        metricTagOptional = Optional.of(metricTag);
+                    } else {
+                        metricTagOptional = Optional.empty();
+                    }
+                    return metricTagOptional;
+                })
+                .filter(metricTagOptional -> metricTagOptional.isPresent())
+                .map(metricTagOptional -> metricTagOptional.get())
+                .collectList()
+                .flatMap(mts -> createMetricTag(mts));
     }
 
-    public Collection<MetricTag> findMetricTag(String metric, String tagName, String tagValue) {
-        String key = MetricTag.cacheKey(metric, tagName, tagValue);
-        return cassandraMetricTagCache.get(key, k -> new HashSet<>());
+    public Collection<String> matchingTagByMetric(String metric) {
+        List<MetricTag> metricTags = getAllMetricTags();
+        return metricTags.stream()
+                .filter(metricTag -> metricTag.getMetric().equals(metric))
+                .map(metricTag -> metricTag.getTag())
+                .collect(Collectors.toSet());
     }
-
 
     public Collection<String> matchingTag(String metric, Map<String, String> tags) {
         List<Set<String>> tagSets = new ArrayList<>();
@@ -100,6 +106,29 @@ public class CassandraCacheService {
             intersection = Sets.intersection(intersection, scan);
         }
         return intersection;
+    }
+
+    public Set<String> getAllMetrics() {
+        return cassandraMetricCache.asMap().keySet();
+    }
+
+    public List<MetricTag> getAllMetricTags() {
+        return cassandraMetricTagCache.asMap().values().stream().
+                flatMap(metricTags -> metricTags.stream())
+                .collect(Collectors.toList());
+    }
+
+    private Mono<Integer> createMetricTag(List<MetricTag> metricTags) {
+        return Flux.fromIterable(metricTags)
+                .map(metricTag -> MetricTagEO.toMetricTagEO(metricTag))
+                .flatMap(metricTagEO -> cassandraMetricTagRepository.save(metricTagEO))
+                .map(metricTagEO -> metricTagEO.toMetricTag())
+                .doOnNext(metricTag -> {
+                    add(metricTag);
+                })
+                .collectList()
+                .map(List::size);
+
     }
 
 }

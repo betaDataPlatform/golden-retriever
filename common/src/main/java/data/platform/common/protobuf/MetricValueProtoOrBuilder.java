@@ -11,7 +11,7 @@ public interface MetricValueProtoOrBuilder extends
    * <code>string metric = 1;</code>
    * @return The metric.
    */
-  java.lang.String getMetric();
+  String getMetric();
   /**
    * <code>string metric = 1;</code>
    * @return The bytes for metric.
@@ -27,31 +27,31 @@ public interface MetricValueProtoOrBuilder extends
    * <code>map&lt;string, string&gt; tags = 2;</code>
    */
   boolean containsTags(
-      java.lang.String key);
+      String key);
   /**
    * Use {@link #getTagsMap()} instead.
    */
-  @java.lang.Deprecated
-  java.util.Map<java.lang.String, java.lang.String>
+  @Deprecated
+  java.util.Map<String, String>
   getTags();
   /**
    * <code>map&lt;string, string&gt; tags = 2;</code>
    */
-  java.util.Map<java.lang.String, java.lang.String>
+  java.util.Map<String, String>
   getTagsMap();
   /**
    * <code>map&lt;string, string&gt; tags = 2;</code>
    */
 
-  java.lang.String getTagsOrDefault(
-      java.lang.String key,
-      java.lang.String defaultValue);
+  String getTagsOrDefault(
+      String key,
+      String defaultValue);
   /**
    * <code>map&lt;string, string&gt; tags = 2;</code>
    */
 
-  java.lang.String getTagsOrThrow(
-      java.lang.String key);
+  String getTagsOrThrow(
+      String key);
 
   /**
    * <code>int64 eventTime = 3;</code>

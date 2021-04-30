@@ -65,13 +65,21 @@ public class CassandraMetricResultQueryServiceImpl implements MetricResultQueryS
                 .flatMap(queryMetric -> {
                     // 指标名称
                     String metric = queryMetric.getMetric();
-                    // 获取需要查询的指标以及对应的标签
-                    List<Map<String, String>> queryTags = getMetricTags(queryMetric);
+
                     // 要查询的标签
                     Set<String> tagJsons = new HashSet<>();
-                    for (Map<String, String> tagMap : queryTags) {
-                        tagJsons.addAll(cassandraCacheService.matchingTag(metric, tagMap));
+
+                    if (queryMetric.getTags().size() == 0) {
+                        // 只通过指标查询
+                        tagJsons.addAll(cassandraCacheService.matchingTagByMetric(metric));
+                    } else {
+                        // 获取需要查询的指标以及对应的标签
+                        List<Map<String, String>> queryTags = getMetricTags(queryMetric);
+                        for (Map<String, String> tagMap : queryTags) {
+                            tagJsons.addAll(cassandraCacheService.matchingTag(metric, tagMap));
+                        }
                     }
+
                     // 分组标签
                     List<String> groupBys = new ArrayList<>();
                     if (Objects.nonNull(queryMetric.getGroupers())) {
@@ -119,11 +127,7 @@ public class CassandraMetricResultQueryServiceImpl implements MetricResultQueryS
                             .groupBy(sql -> sql.hashCode() % queryThreadNum)
                             .publishOn(Schedulers.boundedElastic());
 
-                    if (aggregatorUnit == QueryAggregatorUnit.PLAIN) {
-                        return cassandraDataPointRepository.find(groups);
-                    } else {
-                        return cassandraDataPointRepository.statFunction(aggregatorUnit, groups, day, queryTimes.get(0).getStartOffSet());
-                    }
+                    return cassandraDataPointRepository.find(groups);
                 });
 
         Flux<Result> resultFlux;

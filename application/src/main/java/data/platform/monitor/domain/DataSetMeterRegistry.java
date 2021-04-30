@@ -239,7 +239,6 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
             metricValue.setTag(tag);
             metricValue.setEventTime(eventTime);
             metricValue.setValue(Double.valueOf(DoubleFormat.wholeOrDecimal(value)));
-            metricValue.setTtl(TTL);
 
             metricValues.add(metricValue);
         }
@@ -262,7 +261,6 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
         metricValue.setTag(tag);
         metricValue.setEventTime(eventTime);
         metricValue.setValue(Double.valueOf(DoubleFormat.wholeOrDecimal(value)));
-        metricValue.setTtl(TTL);
         return metricValue;
     }
 

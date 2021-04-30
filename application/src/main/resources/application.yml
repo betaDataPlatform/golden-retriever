@@ -13,3 +13,7 @@ metric:
     buffer:
       maxSize: 3
       maxTime: 500
+
+query:
+  log:
+    executeTime: 10

@@ -23,8 +23,6 @@ public class MetricValue {
 
     private Double value;
 
-    private Integer ttl;
-
     public String getTagJson() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {

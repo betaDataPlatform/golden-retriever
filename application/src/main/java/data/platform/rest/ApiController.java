@@ -13,6 +13,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,9 @@ public class ApiController {
 
     private Timer queryTimer;
 
+    @Value("${query.log.executeTime}")
+    private int executeTimeLog;
+
     @PostConstruct
     public void init() {
         queryTimer = Timer.builder("dp.query.timer")
@@ -60,7 +64,6 @@ public class ApiController {
                 metricValue.setValue(Double.parseDouble(samplePoint[1].toString()));
                 metricValue.setMetric(metric.getName());
                 metricValue.setTag(metric.getTags());
-                metricValue.setTtl(metric.getTtl());
                 // 发布事件
                 applicationContext.publishEvent(new MetricValueEvent(metricValue));
             }
@@ -74,7 +77,7 @@ public class ApiController {
                 .elapsed()
                 .doOnNext(tuple2 -> {
                     queryTimer.record(tuple2.getT1(), TimeUnit.MILLISECONDS);
-                    if (tuple2.getT1() > 0) {
+                    if (tuple2.getT1() > executeTimeLog) {
                         ObjectMapper objectMapper = new ObjectMapper();
                         try {
                             log.info("query time: " + tuple2.getT1() + "," + objectMapper.writeValueAsString(queryBuilder));

@@ -24,7 +24,6 @@ public class DropMetricValueEvent extends ApplicationEvent {
                 .putAllTags(metricValue.getTag())
                 .setEventTime(metricValue.getEventTime().atZone(ZoneId.systemDefault()).toEpochSecond())
                 .setValue(metricValue.getValue())
-                .setTtl(metricValue.getTtl())
                 .build();
         return metricValueProto;
     }

@@ -1,6 +1,5 @@
 package data.platform.timescale.internal.query;
 
-import data.platform.common.domain.MetricTag;
 import data.platform.common.service.query.MetricTagQueryService;
 import data.platform.timescale.internal.cache.TsCacheService;
 import data.platform.timescale.persistence.repository.TsMetricTagRepository;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 
-import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,8 +50,4 @@ public class TsMetricTagQueryServiceImpl implements MetricTagQueryService {
         return Flux.fromIterable(tagKeys);
     }
 
-    @Override
-    public Flux<MetricTag> findMetricTag(String metric, String tagName, String tagValue) {
-        return Flux.empty();
-    }
 }

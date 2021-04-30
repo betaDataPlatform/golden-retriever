@@ -31,11 +31,6 @@ public class TsMetricValueCommandServiceImpl implements MetricValueCommandServic
     final TsDataPointRepository dataPointRepository;
 
     @Override
-    public Mono<Long> save(MetricValue metricValue) {
-        return null;
-    }
-
-    @Override
     public Mono<Integer> saveAll(List<MetricValue> metricValueList) {
         return metricTagCommandService.saveAll(metricValueList)
                 .then(dataPointRepository.saveAll(createDataPointEOs(metricValueList)).count().map(count -> count.intValue()));

@@ -24,9 +24,6 @@ public class DataPointEO {
     @Column("value")
     private Double value;
 
-    @Transient
-    private Integer ttl;
-
     public DataPoint toDataPoint() {
         DataPoint dataPoint = new DataPoint();
         LocalDateTime localDateTime = LocalDateTime.of(dataPointKey.getPartition(),dataPointKey.getOffset());

@@ -11,5 +11,4 @@ message MetricValueProto {
   map<string, string> tags = 2;
   int64 eventTime = 3;
   double value = 4;
-  int64 ttl = 5;
 }
