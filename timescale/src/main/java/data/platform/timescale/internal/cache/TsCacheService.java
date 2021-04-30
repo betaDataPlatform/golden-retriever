@@ -88,7 +88,7 @@ public class TsCacheService {
     }
 
     public Mono<Integer> metricTagPutCache(List<MetricTag> metricTags) {
-        return Flux.fromIterable(metricTags)
+        return Flux.fromIterable(metricTags.stream().collect(Collectors.toSet()))
                 .map(metricTag -> {
                     String key = metricTag.cacheKey();
                     Set<MetricTag> mts = tsMetricTagCache.get(key, k -> new HashSet<>());

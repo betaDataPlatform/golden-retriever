@@ -34,8 +34,8 @@ public class TsMetricResultQueryServiceTest {
         QueryBuilder queryBuilder = new QueryBuilder();
 
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime beginLocalDateTime = LocalDateTime.parse("2021-04-28 22:00:00", df);
-        LocalDateTime endLocalDateTime = LocalDateTime.parse("2021-04-28 22:59:59", df);
+        LocalDateTime beginLocalDateTime = LocalDateTime.parse("2021-04-30 10:00:00", df);
+        LocalDateTime endLocalDateTime = LocalDateTime.parse("2021-04-30 10:59:59", df);
         Date beginDateTime = Date.from(beginLocalDateTime.atZone( ZoneId.systemDefault()).toInstant());
         Date endDateTime = Date.from(endLocalDateTime.atZone( ZoneId.systemDefault()).toInstant());
         queryBuilder.setBeginDate(beginDateTime.getTime());

@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MonitorController {
 
-    private List<Metric> metrics;
+    private List<Metric> metrics = new ArrayList<>();
 
     @GetMapping("/monitor")
     public Mono<List<Metric>> monitor() {

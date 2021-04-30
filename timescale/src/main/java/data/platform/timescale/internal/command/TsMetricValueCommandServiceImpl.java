@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ConditionalOnBean(name = "timeScaleConfig")
 @Service
@@ -37,15 +38,15 @@ public class TsMetricValueCommandServiceImpl implements MetricValueCommandServic
     @Override
     public Mono<Integer> saveAll(List<MetricValue> metricValueList) {
         return metricTagCommandService.saveAll(metricValueList)
-                .map(count -> metricValueList)
-                .flatMapMany(Flux::fromIterable)
+                .then(dataPointRepository.saveAll(createDataPointEOs(metricValueList)).count().map(count -> count.intValue()));
+    }
+
+    private List<DataPointEO> createDataPointEOs(List<MetricValue> metricValueList) {
+        return metricValueList.stream()
                 .map(metricValue -> metricValueToDataPoint(metricValue))
                 .filter(dataPointOptional -> dataPointOptional.isPresent())
                 .map(dataPointOptional -> dataPointOptional.get())
-                .collectList()
-                .flatMap(dataPointEOS -> dataPointRepository.saveAll(dataPointEOS).collectList())
-                .map(List::size);
-
+                .collect(Collectors.toList());
     }
 
     private Optional<DataPointEO> metricValueToDataPoint(MetricValue metricValue) {

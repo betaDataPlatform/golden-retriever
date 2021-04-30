@@ -47,16 +47,25 @@ public class TsDataPointRepository {
             .value(row.get("value", Double.class))
             .build();
 
-    public Flux<DataPointEO> saveAll(List<DataPointEO> eos) {
+    public Flux<String> saveAll(List<DataPointEO> eos) {
+        if (eos.size() == 0) {
+            return Flux.empty();
+        }
+
         return databaseClient.inConnectionMany(connection -> {
-            Statement statement = connection.createStatement(CREATE_SQL);
-            eos.forEach(eo -> statement.bind(0, eo.getEventTime())
-                    .bind(1, eo.getMetricId())
-                    .bind(2, eo.getTagId())
-                    .bind(3, eo.getValue()).add());
+            Statement statement = connection.createStatement(CREATE_SQL).returnGeneratedValues("metric_id");
+            for (DataPointEO eo : eos) {
+                statement.bind(0, eo.getEventTime())
+                        .bind(1, eo.getMetricId())
+                        .bind(2, eo.getTagId())
+                        .bind(3, eo.getValue())
+                        .add();
+            }
 
             return Flux.from(statement.execute())
-                    .flatMap(result -> result.map(MAPPING_FUNCTION));
+                    .flatMap(result -> result.map((row, rowMetaData) ->
+                            row.get("metric_id").toString()));
+                    //.doOnNext(id -> log.info("create dataPoint id is: [{}].", id));
         });
     }
 

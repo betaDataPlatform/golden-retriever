@@ -9,6 +9,8 @@ import data.platform.common.response.QueryResults;
 import data.platform.common.service.query.MetricResultQueryService;
 import data.platform.common.util.DateUtil;
 import data.platform.rest.domain.Metric;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -19,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -31,6 +35,18 @@ public class ApiController {
     final ApplicationContext applicationContext;
 
     final MetricResultQueryService metricResultQueryService;
+
+    final MeterRegistry dataSetMeterRegistry;
+
+    private Timer queryTimer;
+
+    @PostConstruct
+    public void init() {
+        queryTimer = Timer.builder("dp.query.timer")
+                .publishPercentiles(0.95, 0.99) // 95th percentile
+                .publishPercentileHistogram()
+                .register(dataSetMeterRegistry);
+    }
 
     @PostMapping("/datapoints")
     public Mono<Boolean> putData(@RequestBody List<Metric> metrics) {
@@ -57,6 +73,7 @@ public class ApiController {
         return metricResultQueryService.query(queryBuilder)
                 .elapsed()
                 .doOnNext(tuple2 -> {
+                    queryTimer.record(tuple2.getT1(), TimeUnit.MILLISECONDS);
                     if (tuple2.getT1() > 0) {
                         ObjectMapper objectMapper = new ObjectMapper();
                         try {

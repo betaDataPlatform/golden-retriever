@@ -5,6 +5,8 @@ import { timer } from 'rxjs';
 import { Metric } from './Metric';
 
 import * as Highcharts from 'highcharts';
+import theme from 'highcharts/themes/dark-unica';
+theme(Highcharts);
 
 @Component({
   selector: 'app-monitor',
@@ -52,22 +54,72 @@ export class MonitorComponent implements OnInit {
     },
     series: [{
       type: 'spline',
-      name: "成功次数",
+      name: "数据保存次数",
       data: []
     },
     {
       type: 'spline',
-      name: "失败次数",
+      name: "数据丢弃次数",
+      data: []
+    }]
+  };
+
+  queryCount_chart: any;
+  queryCount_chartCallback: any;
+  queryCount_chartOptions: Highcharts.Options = {
+    chart: {
+      type: 'spline',
+    },
+    title: {
+      "text": '查询性能监控'
+    },
+    xAxis: {
+      type: 'datetime',
+      dateTimeLabelFormats: {
+        day: '%m-%d',
+      },
+      labels: {
+        overflow: 'justify',
+      },
+    },
+    yAxis: {
+      allowDecimals: false,
+      title: {
+        text: "次数"
+      }
+    },
+    tooltip: {
+      formatter: function () {
+        let point: any = this.point;
+        console.log(point);
+        return '<b>count: ' + point.y + '</b><br><b>avg: '
+          + point.avg + '</b><br><b>max: ' + point.max + '</b><br><b>95th: ' 
+          + point.th95 + '</b><br><b>99th: ' + point.th99 + '</b><br>';
+      }
+    },
+    plotOptions: {
+      spline: {
+        marker: {
+          enabled: true
+        }
+      }
+    },
+    series: [{
+      type: 'spline',
+      name: "查询次数",
       data: []
     }]
   };
 
   constructor(private httpClient: HttpClient) {
     const self = this;
-    this.metricCount_chartCallback = (chart : Highcharts.Chart) => {
+    this.metricCount_chartCallback = (chart: Highcharts.Chart) => {
       self.metricCount_chart = chart;
     }
-   }
+    this.queryCount_chartCallback = (chart: Highcharts.Chart) => {
+      self.queryCount_chart = chart;
+    }
+  }
 
   ngOnInit() {
 
@@ -79,6 +131,7 @@ export class MonitorComponent implements OnInit {
     let url = '/monitor';
     this.httpClient.get(url).subscribe((data: any) => {
       let metrics: Metric[] = data;
+      // 获取数据处理指标
       metrics.forEach(metric => {
         if (metric.name === 'dp.metricValue.count.save') {
           this.metricCount_chart.series[0].addPoint(metric.datapoints[0], true, false);
@@ -86,7 +139,28 @@ export class MonitorComponent implements OnInit {
           this.metricCount_chart.series[1].addPoint(metric.datapoints[0], true, false);
         }
       });
-    });
+      // 获取查询性能指标
+      let queryMetric: any = {};
+      metrics.forEach(metric => {
+        if (metric.name === 'dp.query.timer.count') {
+          queryMetric['x'] = metric.datapoints[0][0];
+          queryMetric['y'] = metric.datapoints[0][1];
+        } else if (metric.name === 'dp.query.timer.max') {
+          queryMetric['max'] = metric.datapoints[0][1];
+        } else if (metric.name === 'dp.query.timer.avg') {
+          queryMetric['avg'] = metric.datapoints[0][1];
+        } else if (metric.name === 'dp.query.timer.percentile') {
+          if (metric.tags['phi'] === '0.99') {
+            queryMetric['th99'] = metric.datapoints[0][1];
+          }else if (metric.tags['phi'] === '0.95') {
+            queryMetric['th95'] = metric.datapoints[0][1];
+          }
+        }
+      });
+      this.queryCount_chart.series[0].addPoint(queryMetric, true, false);
+
+    })
+
   }
 
 }

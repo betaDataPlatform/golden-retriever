@@ -5,6 +5,8 @@ import { timer } from 'rxjs';
 import { Metric } from './Metric';
 
 import * as Highcharts from 'highcharts';
+import theme from 'highcharts/themes/dark-unica';
+theme(Highcharts);
 
 @Component({
   selector: 'app-systemMonitor',

@@ -42,13 +42,13 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
     ThreadLocal<DecimalFormat> INTEGER_FORMAT = ThreadLocal.withInitial(() -> {
         // the following will ensure a dot ('.') as decimal separator
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.CHINA);
-        return new DecimalFormat("##0", otherSymbols);
+        return new DecimalFormat("#", otherSymbols);
     });
 
     ThreadLocal<DecimalFormat> TWO_DECIMAL_FORMAT = ThreadLocal.withInitial(() -> {
         // the following will ensure a dot ('.') as decimal separator
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.CHINA);
-        return new DecimalFormat("##0.##", otherSymbols);
+        return new DecimalFormat("#.##", otherSymbols);
     });
 
     static {
@@ -73,6 +73,13 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
 
         monitorMetrics.put("dp.metricValue.count.save", new HashMap<>());
         monitorMetrics.put("dp.metricValue.count.drop", new HashMap<>());
+
+        monitorMetrics.put("dp.query.timer.count", new HashMap<>());
+        monitorMetrics.put("dp.query.timer.max", new HashMap<>());
+        monitorMetrics.put("dp.query.timer.avg", new HashMap<>());
+        metricsConvert.put("dp.query.timer.avg", "integer");
+        monitorMetrics.put("dp.query.timer.percentile", new HashMap<>());
+        metricsConvert.put("dp.query.timer.percentile", "integer");
     }
 
     public DataSetMeterRegistry(DataSetRegistryConfig config, Clock clock, ApplicationEventPublisher applicationEventPublisher) {
@@ -278,6 +285,8 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
                 metricValue.setValue(Double.valueOf(bytesToMeg(metricValue.getValue())));
             } else if (convert.equals("decimalMulti100")) {
                 metricValue.setValue(Double.valueOf(decimalMulti100(metricValue.getValue())));
+            } else if (convert.equals("integer")) {
+                metricValue.setValue(Double.valueOf(integerFormat(metricValue.getValue())));
             }
         }
     }
@@ -289,4 +298,9 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
     private String decimalMulti100(double values) {
         return TWO_DECIMAL_FORMAT.get().format(values * 100);
     }
+
+    private String integerFormat(double values) {
+        return INTEGER_FORMAT.get().format(values);
+    }
+
 }

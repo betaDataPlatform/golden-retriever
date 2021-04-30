@@ -9,10 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootTest
@@ -26,11 +23,11 @@ public class MetricValueEventTest {
     @Test
     void save() throws InterruptedException {
         List<Map<String, String>> tagList = new ArrayList<>();
-        tagList.add(createTag("30.0.0.1","sh","r01"));
-        tagList.add(createTag("30.0.0.2","sh","r01"));
-        tagList.add(createTag("30.0.0.3","sh","r02"));
-        tagList.add(createTag("10.0.0.1","bj","r01"));
-        tagList.add(createTag("10.0.0.2","bj","r02"));
+        tagList.add(createTag("30.0.0.1","sh","r01", "Windows"));
+        //tagList.add(createTag("30.0.0.2","sh","r01"));
+        //tagList.add(createTag("30.0.0.3","sh","r02"));
+        //tagList.add(createTag("10.0.0.1","bj","r01"));
+        //tagList.add(createTag("10.0.0.2","bj","r02"));
 
         int valueSize = 1;
         for(Map<String, String> tag : tagList) {
@@ -50,11 +47,14 @@ public class MetricValueEventTest {
         Thread.sleep(60 * 1000);
     }
 
-    private Map<String, String> createTag(String ip, String location, String room) {
+    private Map<String, String> createTag(String ip, String location, String room, String type) {
         Map<String, String> tags = new HashMap<>();
         tags.put("host", ip);
         tags.put("location", location);
         tags.put("room", room);
+        if(Objects.nonNull(type)) {
+            tags.put("type", type);
+        }
         return tags;
     }
 
