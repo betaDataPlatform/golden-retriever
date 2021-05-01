@@ -23,6 +23,9 @@ export class MonitorComponent implements OnInit {
     chart: {
       type: 'spline',
     },
+    time: {
+      useUTC: false,
+    },
     title: {
       "text": '数据处理监控'
     },
@@ -69,6 +72,9 @@ export class MonitorComponent implements OnInit {
   queryCount_chartOptions: Highcharts.Options = {
     chart: {
       type: 'spline',
+    },
+    time: {
+      useUTC: false,
     },
     title: {
       "text": '查询性能监控'

@@ -154,7 +154,7 @@
                 <version>3.3.0</version>
                 <configuration>
                     <!-- 输出到release根目录 -->
-                    <finalName>btDataSet</finalName>
+                    <finalName>goldenRetriever</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
                         <descriptor>src/main/assembly/assembly.xml</descriptor>

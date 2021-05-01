@@ -33,3 +33,4 @@ build/
 .vscode/
 application/logs/dataset.log
 *.log
+*.log

@@ -56,8 +56,8 @@ export class QueryComponent implements OnInit {
       },
     },
     tooltip: {
-      headerFormat: '<b>{series.name}</b><br>',
-      pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}: {point.y:.2f}',
+      headerFormat: '<b>{point.x:%Y-%m-%d %H:%M:%S}</b><br>',
+      pointFormat: '{point.y:.2f}',
     },
     series: [
     ]
@@ -74,6 +74,7 @@ export class QueryComponent implements OnInit {
 
     this.ranges.Today = [this.beginDate, this.endDate];
 
+    this.aggregators.push({ label: '', value: '' });
     this.aggregators.push({ label: '平均值', value: 'avg' });
     this.aggregators.push({ label: '最大值', value: 'max' });
     this.aggregators.push({ label: '最小值', value: 'min' });
@@ -197,7 +198,7 @@ export class QueryComponent implements OnInit {
             type: 'spline',
           },
           title: {
-            text: '执行时间：' + response.headers.get('executetime') + ' ms, 数据点: ' + sampleSize,
+            text: '查询时间：' + response.headers.get('executetime') + ' ms, 数量: ' + sampleSize,
           },
           time: {
             useUTC: false,

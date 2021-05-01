@@ -7,6 +7,10 @@ timescale:
   initialSize: 5
   max_size: 5
 
+retention:
+  policy:
+    days: 60
+
 ts:
   caffeine:
     expire:

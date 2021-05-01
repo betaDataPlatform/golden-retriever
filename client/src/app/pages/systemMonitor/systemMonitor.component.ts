@@ -23,6 +23,9 @@ export class SystemMonitorComponent implements OnInit {
     chart: {
       type: 'spline',
     },
+    time: {
+      useUTC: false,
+    },
     title: {
       "text": '内存使用监控'
     },
@@ -74,6 +77,9 @@ export class SystemMonitorComponent implements OnInit {
   cpu_chartOptions: Highcharts.Options = {
     chart: {
       type: 'spline',
+    },
+    time: {
+      useUTC: false,
     },
     title: {
       "text": 'CPU使用监控'
@@ -139,11 +145,11 @@ export class SystemMonitorComponent implements OnInit {
       let metrics: Metric[] = data;
       metrics.forEach(metric => {
         if (metric.name === 'jvm.memory.used') {
-          if (metric.tags['id'] === 'PS Eden Space') {
+          if (metric.tags['id'].endsWith('Eden Space')) {
             this.mem_chart.series[0].addPoint(metric.datapoints[0], true, false);
-          } else if (metric.tags['id'] === 'PS Survivor Space') {
+          } else if (metric.tags['id'].endsWith('Survivor Space')) {
             this.mem_chart.series[1].addPoint(metric.datapoints[0], true, false);
-          } else if (metric.tags['id'] === 'PS Old Gen') {
+          } else if (metric.tags['id'].endsWith('Old Gen')) {
             this.mem_chart.series[2].addPoint(metric.datapoints[0], true, false);
           }
         } else if (metric.name === 'system.cpu.usage') {

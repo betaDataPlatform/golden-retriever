@@ -1,0 +1,54 @@
+postgresql:
+
+ yum install zlib-devel
+ yum install readline-devel
+ yum install openssl-devel 
+
+ ./configure --with-openssl
+ gmake
+ gmake install
+
+timescale
+   
+   yum install cmake
+
+   ./bootstrap -DREGRESS_CHECKS=OFF
+
+   cd build && make
+
+   make install
+   
+
+ # 1 添加用户
+ useradd postgres
+ # 2 设置密码
+ passwd postgres
+ # 3 创建相关目录
+ mkdir -p /home/pgsql/data
+ # 4 更改目录宿主
+ chown -R postgres:postgres /home/pgsql/data
+
+ 切换至 postgres 用户
+ su - postgres
+
+ # 初始化数据目录
+ /usr/local/pgsql/bin/initdb -D /home/pgsql/data
+
+ # 切换至 postgres 用户
+ # 1 启动数据库
+ /usr/local/pgsql/bin/pg_ctl -D /home/pgsql/data start
+ # 2 停止数据库
+ /usr/local/pgsql/bin/pg_ctl stop -D /home/pgsql/data
+
+ psql -h 127.0.0.1 -p 5432 -U postgres -d postgres
+ \l
+ create user timescaleuser with password timescaleuser
+
+ create database timescale owner timescaleuser
+
+ grant all priviledges on database timescale to timescaleuser
+
+ CREATE EXTENSION IF NOT EXISTS timescaledb;
+
+ 
+

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <assembly>
 
-    <id>dc.dataSet</id>
+    <id>dp.goldenRetriever</id>
     <includeBaseDirectory>true</includeBaseDirectory>
 
     <formats>
@@ -35,6 +35,7 @@
             <fileMode>0644</fileMode>
             <includes>
                 <include>*.properties</include>
+                <include>*.yml</include>
                 <include>*.xml</include>
             </includes>
         </fileSet>
