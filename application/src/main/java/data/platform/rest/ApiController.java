@@ -9,6 +9,7 @@ import data.platform.common.response.QueryResults;
 import data.platform.common.service.query.MetricResultQueryService;
 import data.platform.common.util.DateUtil;
 import data.platform.rest.domain.Metric;
+import data.platform.rest.domain.Response;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +21,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -53,22 +56,25 @@ public class ApiController {
     }
 
     @PostMapping("/datapoints")
-    public Mono<Boolean> putData(@RequestBody List<Metric> metrics) {
+    public Mono<ResponseEntity<Response>> putData(@RequestBody List<Metric> metrics) {
         // metric --> metricValue
         // 把接收的数据,处理成list
-        List<MetricValue> metricValues = new ArrayList<>();
-        for (Metric metric : metrics) {
-            for (Object[] samplePoint : metric.getSamplePoints()) {
-                MetricValue metricValue = new MetricValue();
-                metricValue.setEventTime(DateUtil.getDateTimeOfTimestamp(Long.parseLong(samplePoint[0].toString())));
-                metricValue.setValue(Double.parseDouble(samplePoint[1].toString()));
-                metricValue.setMetric(metric.getName());
-                metricValue.setTag(metric.getTags());
-                // 发布事件
-                applicationContext.publishEvent(new MetricValueEvent(metricValue));
-            }
-        }
-        return Mono.just(true);
+        return Flux.fromIterable(metrics)
+                .flatMap(metric -> {
+                    Set<MetricValue> metricValueSet = metric.getSamplePoints().stream()
+                            .map(samplePoint -> MetricValue.builder()
+                                    .metric(metric.getName())
+                                    .tag(metric.getTags())
+                                    .eventTime(DateUtil.getDateTimeOfTimestamp(Long.parseLong(samplePoint[0].toString())))
+                                    .value(Double.parseDouble(samplePoint[1].toString()))
+                                    .build())
+                            .collect(Collectors.toSet());
+                    return Flux.fromIterable(metricValueSet);
+                })
+                .doOnNext(metricValue -> applicationContext.publishEvent(new MetricValueEvent(metricValue)))
+                .count()
+                .map(dataPointNum -> ResponseEntity.ok()
+                        .body(new Response()));
     }
 
     @PostMapping(value = "/datapoints/query")

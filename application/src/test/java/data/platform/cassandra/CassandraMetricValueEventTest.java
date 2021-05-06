@@ -2,6 +2,7 @@ package data.platform.cassandra;
 
 import data.platform.common.domain.MetricValue;
 import data.platform.common.event.MetricValueEvent;
+import io.micrometer.core.instrument.util.DoubleFormat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,12 +32,12 @@ public class CassandraMetricValueEventTest {
         int valueSize = 1;
         for(Map<String, String> tag : tagList) {
             for (int i = 0; i < 10; i++) {
-                MetricValue metricValue = new MetricValue();
-                metricValue.setMetric("CPU_LOAD");
-                metricValue.setTag(tag);
-
-                metricValue.setEventTime(LocalDateTime.now().plusMinutes(i));
-                metricValue.setValue(Double.valueOf(valueSize)*100);
+                MetricValue metricValue = MetricValue.builder()
+                        .metric("CPU_LOAD")
+                        .tag(tag)
+                        .eventTime(LocalDateTime.now().plusMinutes(i))
+                        .value(Double.valueOf(valueSize)*100)
+                        .build();
 
                 valueSize ++;
                 applicationContext.publishEvent(new MetricValueEvent(metricValue));

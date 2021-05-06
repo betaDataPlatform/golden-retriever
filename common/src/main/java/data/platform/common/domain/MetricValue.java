@@ -1,6 +1,7 @@
 package data.platform.common.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.TreeMap;
 
 @Getter
 @Setter
+@Builder
 public class MetricValue {
 
     private String metric;
@@ -32,5 +34,14 @@ public class MetricValue {
         } catch (Exception ex) {
             return "";
         }
+    }
+
+    @Override
+    public String toString() {
+        return "MetricValue{" +
+                "metric='" + metric + '\'' +
+                ", tag=" + tag +
+                ", eventTime=" + eventTime +
+                '}';
     }
 }

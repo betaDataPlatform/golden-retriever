@@ -56,9 +56,10 @@ CREATE TABLE data_point
     value      DOUBLE PRECISION NOT NULL
 );
 
-ALTER TABLE data_point
-    ADD CONSTRAINT "PK_data_point"
-        PRIMARY KEY (event_time, metric_id, tag_id);
+
+# ALTER TABLE data_point
+    #     ADD CONSTRAINT "PK_data_point"
+    #         PRIMARY KEY (event_time, metric_id, tag_id);
 
 CREATE
 INDEX "IXFK_data_point_metric" ON data_point (metric_id);

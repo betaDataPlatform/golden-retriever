@@ -234,12 +234,12 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
 
             LocalDateTime eventTime = dateToLocalDateTime(wallTime);
 
-            MetricValue metricValue = new MetricValue();
-            metricValue.setMetric(metricName);
-            metricValue.setTag(tag);
-            metricValue.setEventTime(eventTime);
-            metricValue.setValue(Double.valueOf(DoubleFormat.wholeOrDecimal(value)));
-
+            MetricValue metricValue = MetricValue.builder()
+                    .metric(metricName)
+                    .tag(tag)
+                    .eventTime(eventTime)
+                    .value(Double.valueOf(DoubleFormat.wholeOrDecimal(value)))
+                    .build();
             metricValues.add(metricValue);
         }
         return metricValues.stream();
@@ -256,12 +256,12 @@ public class DataSetMeterRegistry extends StepMeterRegistry {
             tag.put(meterTag.getKey(), meterTag.getValue());
         }
 
-        MetricValue metricValue = new MetricValue();
-        metricValue.setMetric(metricName);
-        metricValue.setTag(tag);
-        metricValue.setEventTime(eventTime);
-        metricValue.setValue(Double.valueOf(DoubleFormat.wholeOrDecimal(value)));
-        return metricValue;
+        return MetricValue.builder()
+                .metric(metricName)
+                .tag(tag)
+                .eventTime(eventTime)
+                .value(Double.valueOf(DoubleFormat.wholeOrDecimal(value)))
+                .build();
     }
 
     private Meter.Id idWithSuffix(Meter.Id id, String suffix) {
